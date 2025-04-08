@@ -32,7 +32,7 @@ export const fetchProductById = async (id: number) => {
 
 export const fetchCart = async () => {
     try {
-        const res = await fetch(`${API_URL}/carts?limit=1`);
+        const res = await fetch(`${API_URL}/carts`);
 
         if(!res.ok) throw new Error(`Failed to fetch carts, ${res.status}`); 
 
