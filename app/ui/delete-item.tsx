@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-const DeleteItem = ({ id }: { id: number }) => {
+const DeleteItem = () => {
 
   return (
     <button

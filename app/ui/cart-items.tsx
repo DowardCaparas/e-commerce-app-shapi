@@ -3,7 +3,6 @@ import { ProductsOnCartTypes } from "../lib/definitions";
 import Image from "next/image";
 
 const Cart = ({
-  id,
   products,
   total,
   discountedTotal,

@@ -21,7 +21,7 @@ export interface ProductDataTypes {
 }
 
 export interface ProductsOnCartTypes {
-    id: number;
+    id?: number;
     products: {
         id: number;
         title: string;

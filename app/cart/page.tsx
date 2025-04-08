@@ -11,7 +11,6 @@ const Cart = async () => {
         {order.map((item: ProductsOnCartTypes) => (
             <CartItem 
               key={item.id}
-              id={item.id}
               products={item.products}
               total={item.total}
               discountedTotal={item.discountedTotal}
