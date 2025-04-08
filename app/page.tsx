@@ -1,5 +1,4 @@
 import React from "react";
-import { fetchAllProducts } from "./lib/data";
 
 const Home = async () => {
 
