@@ -1,8 +1,8 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchAllProducts = async () => {
+export const fetchAllProducts = async (limit: number) => {
     try {
-        const res = await fetch(`${API_URL}/products`);  
+        const res = await fetch(`${API_URL}/products?limit=${limit}`);  
 
         if(!res.ok) throw new Error(`Failed to fetch products, ${res.status}`);
 
@@ -45,4 +45,48 @@ export const fetchCart = async () => {
     }
 }
 
+export const fetchProductByCategory = async (category: string) => {
+    try {
+        const res = await fetch(`https://dummyjson.com/products/category/${category}`);
 
+        if(!res.ok) throw new Error(`Failed to fetch product by category, ${res.status}`);
+
+        const data = await res.json();
+        return data.products;
+
+    } catch (error) {
+        console.error("Error fetching product by category:", error);
+        throw error;
+    }
+}
+
+export const fetchCategoryList = async () => {
+    try {
+        const res = await fetch('https://dummyjson.com/products/category-list');
+
+        if(!res.ok) throw new Error(`Failed to fetch category list, ${res.status}`);
+
+        const data = await res.json();
+        return data;
+
+    } catch (error) {
+        console.error("Error fetching category list:", error);
+        throw error;
+    }
+}
+
+export const fetchProductsBySearch = async (search: string) => {
+    try {
+
+        const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
+        
+        if(!res.ok) throw new Error(`Failed to fetch category list, ${res.status}`);
+
+        const data = await res.json();
+        return data.products;
+
+    } catch (error) {
+        console.error("Error fetching product by search:", error);
+        throw error;
+    }
+}
