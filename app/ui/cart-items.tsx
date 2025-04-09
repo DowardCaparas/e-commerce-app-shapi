@@ -1,4 +1,3 @@
-import React from "react";
 import { ProductsOnCartTypes } from "../lib/definitions";
 import Image from "next/image";
 
