@@ -39,7 +39,10 @@ const LogIn = () => {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.message || "Login failed");
+      if (!res.ok) {
+        setError("Failed to login username or password is incorrect!");
+        throw new Error(data.message || "Login failed");
+      }
 
       localStorage.setItem("token", data.accessToken);
       localStorage.setItem("user", JSON.stringify(data));
@@ -47,8 +50,9 @@ const LogIn = () => {
       console.log(data);
 
       router.push("/dashboard");
-    } catch (error: any) {
-      setError(error);
+    } catch (error) {
+      console.error("Error to log in the user:", error);
+      throw error;
     } finally {
       setLoading(false);
     }

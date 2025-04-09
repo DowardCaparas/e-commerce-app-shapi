@@ -37,12 +37,13 @@ const UserDashboard = () => {
           setUser(userData);
         }
       } catch (error) {
-        console.error("Failed to fetch user data:", error); // Logging the error
+        console.error("Failed to fetch user data:", error);
+        throw error;
       }
     };
 
     fetchUser();
-  }, [router]);
+  }, [router]); // Added router to the dependency array
 
   if (!user) return <p className="p-4">Loading user data...</p>;
 
