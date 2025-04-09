@@ -39,16 +39,27 @@ export interface ProductsOnCartTypes {
 }
 
 // Represents the shape of the user object returned from the API
-export type User = {
+export interface User {
     id: number;
     username: string;
     email: string;
     firstName: string;
     lastName: string;
+    maidenName: string;
     gender: "male" | "female" | "other"; // You can expand gender options if needed
     image: string;
     accessToken: string;
     refreshToken: string;
+    birthDate: string;
+    address: {
+        address: string;
+        city: string;
+        state: string;
+        stateCode: string;
+        postalCode: string;
+    }
+    country: string;
+    role: string;
   };
   
   // Represents the JWT token for auth

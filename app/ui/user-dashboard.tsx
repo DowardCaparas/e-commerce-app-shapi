@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { User } from "../lib/definitions";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const UserDashboard = () => {
-
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [user, setUser] = useState<User | null>(null); // Type explicitly null for clearer state handling
@@ -22,11 +22,11 @@ const UserDashboard = () => {
 
       try {
         const res = await fetch(`${API_URL}/user/me`, {
-          method: 'GET',  
+          method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          credentials: 'include'
+          credentials: "omit",
         });
 
         if (!res.ok) {
@@ -45,13 +45,44 @@ const UserDashboard = () => {
     fetchUser();
   }, [router]); // Added router to the dependency array
 
+  // Fetch more information about the user only if user exists
+  useEffect(() => {
+    if (user) {
+      const fetchMoreInfo = async () => {
+        try {
+          const res = await fetch(`${API_URL}/users/${user?.id}`);
+
+          if (!res.ok)
+            throw new Error(`Failed to fetch user info, ${res.status}`);
+
+          const data = await res.json();
+          setUser(data);
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+          throw error;
+        }
+      };
+
+      fetchMoreInfo();
+    }
+  }, [user]); // This will trigger when the user state changes
+
   if (!user) return <p className="p-4">Loading user data...</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Welcome, {user.firstName}!</h1>
-      <p>Username: {user.username}</p>
-      <p>Email: {user.email}</p>
+    <div className="flex flex-col gap-2 items-center">
+      <Image
+        src={user.image}
+        alt={user.firstName}
+        width={100}
+        height={100}
+        className="rounded-full"
+      />
+      <div className="flex items-center gap-2 font-semibold text-xl">
+        <span>{user.firstName}</span>
+        <span>{user.lastName}</span>
+      </div>
+      <span className="text-gray-500">Admin</span>
     </div>
   );
 };

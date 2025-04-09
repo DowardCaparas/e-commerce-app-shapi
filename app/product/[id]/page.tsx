@@ -11,7 +11,6 @@ const ProductPage = async (props: {
   const product = await fetchProductById(id);
 
   return (
-    <>
       <ProductDetails 
         title={product.title} 
         price={product.price}
@@ -25,7 +24,6 @@ const ProductPage = async (props: {
         shippingInformation={product.shippingInformation}
         returnPolicy={product.returnPolicy}
       />
-    </>
   );
 };
 

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LogIn = () => {
-
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -21,6 +20,13 @@ const LogIn = () => {
     }));
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, []);
+
   const handleLogIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,8 +34,8 @@ const LogIn = () => {
 
     try {
       const res = await fetch(`${API_URL}/user/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
@@ -47,8 +53,6 @@ const LogIn = () => {
       localStorage.setItem("token", data.accessToken);
       localStorage.setItem("user", JSON.stringify(data));
 
-      console.log(data);
-
       router.push("/dashboard");
     } catch (error) {
       console.error("Error to log in the user:", error);
@@ -63,9 +67,9 @@ const LogIn = () => {
       className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col items-center gap-6 py-6
     rounded-lg shadow-sm"
     >
-      <div className="w-full flex flex-col gap-8 md:p-16 sm:p-14 p-10">
+      <>
         <span className="md:text-2xl text-xl font-medium">Log In</span>
-        <form onSubmit={handleLogIn}>
+        <form onSubmit={handleLogIn} className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10">
           <div className="inline-grid">
             <label htmlFor="username">Username</label>
             <input
@@ -106,7 +110,7 @@ const LogIn = () => {
         >
           Create an account
         </Link>
-      </div>
+      </>
     </div>
   );
 };
