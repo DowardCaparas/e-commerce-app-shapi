@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../lib/definitions";
 import { fetchUsersBySearch } from "../lib/data";
 import Image from "next/image";
