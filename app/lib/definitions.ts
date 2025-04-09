@@ -37,7 +37,3 @@ export interface ProductsOnCartTypes {
     totalProducts: number;
     totalQuantity: number;
 }
-
-export interface ProductCategoryTypes {
-    
-}
