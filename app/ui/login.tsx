@@ -39,7 +39,6 @@ const LogIn = () => {
         body: JSON.stringify({
           username: formData.username,
           password: formData.password,
-          expiresInMins: 30, // optional, defaults to 60
         }),
       });
 

@@ -5,19 +5,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NavBar = () => {
-  const [token, setToken] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
-    setToken(accessToken);
-  }, []);
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  useEffect(() => {
     const fetchUser = async () => {
-      if (!token) return;
-
       try {
         const res = await fetch(`${API_URL}/user/me`, {
           method: "GET",
@@ -27,19 +23,25 @@ const NavBar = () => {
           credentials: "omit",
         });
 
-        if (!res.ok) throw new Error(`Failed to fetch user`);
+        if (res.status === 401) {
+          console.warn("Token expired or invalid, logging out");
+          localStorage.removeItem("token");
+          setIsLoggedIn(false);
+          return;
+        }
+
+        if (!res.ok) throw new Error("Failed to fetch user");
 
         const data = await res.json();
         setImage(data.image);
+        setIsLoggedIn(true);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
     };
 
-    if (token) {
-      fetchUser();
-    }
-  }, [token]); // Re-run the effect when the token changes
+    fetchUser();
+  }, [API_URL]);
 
   return (
     <nav
@@ -56,7 +58,7 @@ const NavBar = () => {
         Shapi
       </Link>
 
-      {!token ? (
+      {!isLoggedIn ? (
         <Link href="/login">
           <span className="text-white font-medium hover:text-gray-200 active:text-white">
             Log In

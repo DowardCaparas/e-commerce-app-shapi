@@ -71,3 +71,27 @@ export const fetchUsersBySearch = async (search: string) => {
         throw error;
     }
 }
+
+export const fetchUserById= async (id: number) => {
+    try {
+        const res = await fetch(`${API_URL}/users/${id}`);
+        if(!res.ok) throw new Error(`Failed to fetch user, ${res.status}`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        throw error;
+    }
+}
+
+export const fetchUserCart = async (id: number, limit: number) => {
+    try {
+        const res = await fetch(`${API_URL}/users/${id}/carts?limit=${limit}`);
+        if(!res.ok) throw new Error(`Failed to fetch user carts, ${res.status}`);
+        const data = await res.json();
+        return data.carts;
+    } catch (error) {
+        console.error("Error fetching user cart:", error);
+        throw error;
+    }
+}
