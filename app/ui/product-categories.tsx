@@ -25,9 +25,7 @@ const ProductCategories = () => {
 
   return (
     <div className="bg-white p-5">
-      <div className="mb-5 flex justify-between items-center">
-        <span className="text-gray-700 font-semibold text-xl">Products</span>
-        <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mb-5">
           <label htmlFor="category" className="text-gray-500 font-medium">
             Categories
           </label>
@@ -55,8 +53,7 @@ const ProductCategories = () => {
             </SelectContent>
           </Select>
         </div>
-      </div>
-      <ProductCards category={category} />
+      <ProductCards category={category} limit={15}/>
     </div>
   );
 };

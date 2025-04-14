@@ -1,12 +1,24 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { ProductDataTypes } from "../lib/definitions";
 import Image from "next/image";
-import { fetchAllProducts, fetchProductByCategory, fetchProductsBySearch } from "../lib/data";
+import {
+  fetchAllProducts,
+  fetchProductByCategory,
+  fetchProductsBySearch,
+} from "../lib/data";
 import { useEffect, useState } from "react";
 
-const ProductCards = ({ category, search = "" }: { category: string, search?: string }) => {
+const ProductCards = ({
+  category = "",
+  search = "",
+  limit,
+}: {
+  category?: string;
+  search?: string;
+  limit: number;
+}) => {
   const [products, setProducts] = useState<ProductDataTypes[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +33,7 @@ const ProductCards = ({ category, search = "" }: { category: string, search?: st
       } else if (category !== "") {
         data = await fetchProductByCategory(category);
       } else {
-        data = await fetchAllProducts(15);
+        data = await fetchAllProducts(limit);
       }
 
       setProducts(data);
@@ -40,7 +52,7 @@ const ProductCards = ({ category, search = "" }: { category: string, search?: st
   }
 
   return (
-    <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+    <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4">
       {products.map((product: ProductDataTypes) => (
         <Link
           key={product.id}

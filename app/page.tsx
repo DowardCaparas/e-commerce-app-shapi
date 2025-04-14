@@ -1,18 +1,29 @@
-import Link from "next/link";
-import ProductCategories from "./ui/product-categories";
+"use client";
 
-const Home = async () => {
-  
+import ProductCategories from "./ui/product-categories";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import ProductCards from "./ui/product-card";
+
+const Home = () => {
+  const [search, setSearch] = useState("");
+
   return (
-    <div className="lg:px-16 md:px-8 px-4 mt-20 mb-28 flex flex-col justify-center gap-10">
-       <Link
-              href="/search-products"
-              className="bg-white text-start py-2 px-4 w-full cursor-text text-gray-500 
-              border-2 border-orange-500"
-            >
-              Search products
-            </Link>
-        <ProductCategories />
+    <div className="lg:px-16 md:px-8 px-4 mt-10 mb-28">
+        <h3 className="text-2xl text-gray-500 font-medium">Products</h3>
+        <Input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search"
+          className="bg-white text-start p-4 w-full cursor-text text-gray-500 
+              border-2 border-orange-500 my-5"
+        />
+        {search ? (
+          <ProductCards search={search} limit={0} />
+        ) : (
+          <ProductCategories />
+        )}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { User } from "../lib/definitions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Users from "./users";
 
 const UserDashboard = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -70,19 +71,21 @@ const UserDashboard = () => {
   if (!user) return <p className="p-4">Loading user data...</p>;
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <Image
-        src={user.image}
-        alt={user.firstName}
-        width={100}
-        height={100}
-        className="rounded-full"
-      />
-      <div className="flex items-center gap-2 font-semibold text-xl">
-        <span>{user.firstName}</span>
-        <span>{user.lastName}</span>
-      </div>
-      <span className="text-gray-500">Admin</span>
+    <div className="">
+      {user.role === "admin" ? (
+        <div className="flex border">
+          <div className="">
+
+          </div>
+          
+        </div>
+      )
+      : (
+        <div>
+          User
+        </div>
+      )
+    }
     </div>
   );
 };

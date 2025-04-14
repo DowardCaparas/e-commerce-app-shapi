@@ -7,6 +7,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -43,7 +52,7 @@ const Users = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 mt-16">
+    <div className="flex flex-col w-full">
       <h3 className="text-2xl text-gray-500 font-medium">Users</h3>
 
       <Input
@@ -51,35 +60,52 @@ const Users = () => {
         placeholder="Search"
         value={search}
         onChange={handleChange}
+        className="bg-white text-start p-4 w-full cursor-text text-gray-500 
+              border-2 border-orange-500 my-5"
       />
 
       {users.length === 0 ? (
         <p className="text-gray-500">No users found.</p>
       ) : (
-        <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
-          {users
-            .filter((user) => user.role === "user")
-            .map((user) => (
-              <Link
-                href={`/user/${user.id}`}
-                key={user.id}
-                className="bg-white p-5 flex flex-col gap-4 items-center shadow-sm hover:shadow-md rounded-sm"
-              >
-                <Image
-                  src={user.image}
-                  alt={user.username}
-                  width={100}
-                  height={100}
-                  className="rounded-full p-2 bg-gray-100"
-                />
-                <div className="flex items-center gap-2 font-medium">
-                  <span>{user.firstName}</span>
-                  <span>{user.lastName}</span>
-                </div>
-                <span className="text-gray-500">{user.username}</span>
-              </Link>
-            ))}
-        </div>
+        <table>
+          <thead className="bg-gray-200">
+            <tr>
+              {["ID", "Name", "Username", "Email", "Cart"].map((val) => (
+                <th
+                  key={val}
+                  className={`py-2 text-left ${val === "ID" && "w-15"}`}
+                >
+                  {val}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {users
+              .filter((user) => user.role === "user")
+              .map((user) => (
+                <tr key={user.id} className="hover:bg-gray-100">
+                  <td className="py-4">{user.id}</td>
+                  <td>
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <Link
+                      href={`/dashboard/users/${user.id}`}
+                      key={user.id}
+                      className="bg-white border hover:bg-green-100 active:bg-green-200 
+                      font-medium rounded-lg py-2 px-4"
+                    >
+                      View Cart
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

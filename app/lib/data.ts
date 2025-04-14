@@ -84,9 +84,9 @@ export const fetchUserById= async (id: number) => {
     }
 }
 
-export const fetchUserCart = async (id: number, limit: number) => {
+export const fetchUserCart = async (id: number) => {
     try {
-        const res = await fetch(`${API_URL}/users/${id}/carts?limit=${limit}`);
+        const res = await fetch(`${API_URL}/users/${id}/carts`);
         if(!res.ok) throw new Error(`Failed to fetch user carts, ${res.status}`);
         const data = await res.json();
         return data.carts;
