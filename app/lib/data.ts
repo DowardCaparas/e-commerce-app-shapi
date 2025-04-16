@@ -1,8 +1,8 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchAllProducts = async (limit: number) => {
+export const fetchAllProducts = async () => {
     try {
-        const res = await fetch(`${API_URL}/products?limit=${limit}`);  
+        const res = await fetch(`${API_URL}/products`);  
         if(!res.ok) throw new Error(`Failed to fetch products, ${res.status}`);
         const data = await res.json();
         return data.products;

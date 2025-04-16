@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { User } from "../lib/definitions";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Users from "./users";
 
 const UserDashboard = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;

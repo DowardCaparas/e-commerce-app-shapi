@@ -33,7 +33,7 @@ const ProductCards = ({
       } else if (category !== "") {
         data = await fetchProductByCategory(category);
       } else {
-        data = await fetchAllProducts(limit);
+        data = await fetchAllProducts();
       }
 
       setProducts(data);

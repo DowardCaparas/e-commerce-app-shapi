@@ -4,13 +4,9 @@ import { User } from "../lib/definitions";
 const UserDetails = ({
   firstName,
   lastName,
-  maidenName,
   username,
   email,
   image,
-  address,
-  age,
-  gender,
 }: User) => {
   return (
     <div className="bg-white px-5 py-10 border rounded-lg">

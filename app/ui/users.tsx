@@ -3,19 +3,9 @@
 import { useEffect, useState } from "react";
 import { User } from "../lib/definitions";
 import { fetchUsersBySearch } from "../lib/data";
-import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
