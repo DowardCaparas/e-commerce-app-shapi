@@ -19,7 +19,7 @@ const ProductsPage = () => {
               border-2 border-orange-500 my-5"
       />
       {search ? (
-        <ProductCards search={search} limit={0} />
+        <ProductCards search={search}/>
       ) : (
         <ProductCategories />
       )}
