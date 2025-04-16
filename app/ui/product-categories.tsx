@@ -53,7 +53,7 @@ const ProductCategories = () => {
             </SelectContent>
           </Select>
         </div>
-      <ProductCards category={category} limit={15}/>
+      <ProductCards category={category}/>
     </div>
   );
 };
