@@ -13,11 +13,9 @@ import { useEffect, useState } from "react";
 const ProductCards = ({
   category = "",
   search = "",
-  limit,
 }: {
   category?: string;
   search?: string;
-  limit: number;
 }) => {
   const [products, setProducts] = useState<ProductDataTypes[]>([]);
   const [loading, setLoading] = useState(true);

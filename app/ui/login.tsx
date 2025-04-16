@@ -25,7 +25,7 @@ const LogIn = () => {
     if (token) {
       router.push("/dashboard");
     }
-  }, []);
+  }, [router]);
 
   const handleLogIn = async (e: React.FormEvent) => {
     e.preventDefault();
