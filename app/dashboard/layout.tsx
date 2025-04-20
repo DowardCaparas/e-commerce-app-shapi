@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="flex-grow px-2 py-8 md:overflow-y-auto md:px-6">
         {children}
-        </div>
+      </div>
     </div>
   );
 }

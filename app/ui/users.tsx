@@ -6,6 +6,7 @@ import { fetchUsersBySearch } from "../lib/data";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
+import Image from "next/image";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -57,45 +58,35 @@ const Users = () => {
       {users.length === 0 ? (
         <p className="text-gray-500">No users found.</p>
       ) : (
-        <table>
-          <thead className="bg-gray-200">
-            <tr>
-              {["ID", "Name", "Username", "Email", "Cart"].map((val) => (
-                <th
-                  key={val}
-                  className={`py-2 text-left ${val === "ID" && "w-15"}`}
-                >
-                  {val}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {users
-              .filter((user) => user.role === "user")
-              .map((user) => (
-                <tr key={user.id} className="hover:bg-gray-100">
-                  <td className="py-4">{user.id}</td>
-                  <td>
-                    {user.firstName} {user.lastName}
-                  </td>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    <Link
-                      href={`/dashboard/users/${user.id}`}
-                      key={user.id}
-                      className="bg-white border hover:bg-green-100 active:bg-green-200 
+        <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 sm:max-md:grid-cols-3 gap-2">
+          {users
+            .filter((user) => user.role === "user")
+            .map((user) => (
+              <div key={user.id} className="hover:bg-gray-100 flex flex-col gap-4 
+              items-center border rounded-xl p-5">
+                <Image
+                  src={user.image}
+                  alt={user.username}
+                  width={80}
+                  height={80}
+                  className="rounded-full p-1 bg-gray-100 border"
+                />
+                <span className="text-lg font-medium">
+                  {user.firstName} {user.lastName}
+                </span>
+                <span>@{user.username}</span>
+               
+                <Link
+                    href={`/dashboard/users/${user.id}`}
+                    key={user.id}
+                    className="bg-white border hover:bg-green-200 active:bg-green-300 
                       font-medium rounded-lg py-2 px-4"
-                    >
-                      View Cart
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+                  >
+                    View Cart
+                  </Link>
+              </div>
+            ))}
+        </div>
       )}
     </div>
   );

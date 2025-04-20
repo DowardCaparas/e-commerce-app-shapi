@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "./context/auth-context";
 import NavBar from "./ui/navbar";
 
 const montserrart = Montserrat({
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrart.className} antialiased`}>
-        <NavBar />
-        {children}
+        <AuthProvider>
+          <NavBar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
