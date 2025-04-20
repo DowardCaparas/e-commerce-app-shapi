@@ -37,9 +37,9 @@ const LogIn = () => {
       localStorage.setItem("user", JSON.stringify(data));
 
       router.push("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error logging in the user:", error);
-      setError(error.message || "Login failed");
+      setError("Login failed");
     } finally {
       setLoading(false);
     }

@@ -5,8 +5,6 @@ import { User } from "../lib/definitions";
 import { useRouter } from "next/navigation";
 
 const UserDashboard = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
   const [user, setUser] = useState<User | null>(null); // Type explicitly null for clearer state handling
   const router = useRouter();
 
@@ -20,7 +18,7 @@ const UserDashboard = () => {
       }
 
       try {
-        const res = await fetch(`${API_URL}/user/me`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +47,7 @@ const UserDashboard = () => {
     if (user) {
       const fetchMoreInfo = async () => {
         try {
-          const res = await fetch(`${API_URL}/users/${user?.id}`);
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${user?.id}`);
 
           if (!res.ok)
             throw new Error(`Failed to fetch user info, ${res.status}`);
