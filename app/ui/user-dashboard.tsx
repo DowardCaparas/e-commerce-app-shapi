@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { User } from "../lib/definitions";
+import { ProductsOnCartTypes, User } from "../lib/definitions";
 import { useRouter } from "next/navigation";
+import UserDetails from "./user-details";
+import UserCarts from "./user-carts";
+import { fetchUserCart } from "../lib/data";
 
 const UserDashboard = () => {
   const [user, setUser] = useState<User | null>(null); // Type explicitly null for clearer state handling
+  const [cart, setCart] = useState<ProductsOnCartTypes[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +32,7 @@ const UserDashboard = () => {
 
         if (!res.ok) {
           localStorage.removeItem("token");
+          localStorage.removeItem("accountID");
           router.push("/login");
         } else {
           const userData = await res.json();
@@ -46,8 +51,13 @@ const UserDashboard = () => {
   useEffect(() => {
     if (user) {
       const fetchMoreInfo = async () => {
+        const carts = await fetchUserCart(Number(user.id));
+        setCart(carts);
+
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${user?.id}`);
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/${user?.id}`
+          );
 
           if (!res.ok)
             throw new Error(`Failed to fetch user info, ${res.status}`);
@@ -70,18 +80,37 @@ const UserDashboard = () => {
     <div className="">
       {user.role === "admin" ? (
         <div className="flex border">
-          <div className="">
-
+          <div className=""></div>
+        </div>
+      ) : (
+        <div className="">
+          <UserDetails
+            id={user.id}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            maidenName={user.maidenName}
+            username={user.username}
+            email={user.email}
+            image={user.image}
+            address={user.address}
+            age={user.age}
+            gender={user.gender}
+          />
+          <div className="mt-10 mb-2">
+            <span className="text-xl font-semibold">Cart:</span>
           </div>
-          
+          {cart.map((cart: ProductsOnCartTypes) => (
+            <UserCarts
+              key={cart.id}
+              products={cart.products}
+              total={cart.total}
+              discountedTotal={cart.discountedTotal}
+              totalProducts={cart.totalProducts}
+              totalQuantity={cart.totalQuantity}
+            />
+          ))}
         </div>
-      )
-      : (
-        <div>
-          User
-        </div>
-      )
-    }
+      )}
     </div>
   );
 };

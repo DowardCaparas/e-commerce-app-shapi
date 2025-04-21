@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const LogIn = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -21,7 +20,7 @@ const LogIn = () => {
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}/user/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -34,7 +33,7 @@ const LogIn = () => {
       }
 
       localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("accountID", data.id);
 
       router.push("/dashboard");
     } catch (error) {

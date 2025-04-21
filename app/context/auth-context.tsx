@@ -22,16 +22,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const fetchUser = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
-
+  
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!res.ok) throw new Error("Failed to fetch user");
-
+  
+      if (res.status === 401) {
+        // Token expired or invalid
+        console.warn("Token expired or invalid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("accountID");
+        setUser(null);
+        return;
+      }
+  
+      if (!res.ok) {
+        throw new Error("Failed to fetch user");
+      }
+  
       const data: User = await res.json();
       setUser(data);
     } catch (err) {
@@ -39,6 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
     }
   };
+  
 
   useEffect(() => {
     fetchUser();

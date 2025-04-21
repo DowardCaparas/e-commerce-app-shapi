@@ -64,7 +64,7 @@ const ProductReviews = ({reviews}: {reviews?: ProductDataTypes['reviews']}) => {
               </span>
               <div className="h-4 w-full rounded-sm bg-gray-200 mx-5">
                 <div
-                  className="h-4 rounded-sm bg-yellow-500 absolute"
+                  className="h-4 rounded-sm bg-yellow-500"
                   style={{ width: `${percentage}%` }}
                 ></div>
               </div>

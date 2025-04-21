@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { ProductDataTypes } from "../lib/definitions";
 import { useState } from "react";
-import AddToCart from "./add-item";
 import SetQuantity from "./set-quantity";
 import ProductReviews from "./product-reviews";
+import ProductCards from "./product-card";
 
 const ProductDetails = ({
   title,
@@ -15,6 +15,7 @@ const ProductDetails = ({
   brand,
   reviews,
   images,
+  category,
   description,
   warrantyInformation,
   shippingInformation,
@@ -27,6 +28,8 @@ const ProductDetails = ({
   const originalPrice = price / (1 - safeDiscount / 100);
 
   const discountAmount = originalPrice - price;
+
+  console.log(category);
 
   return (
     <>
@@ -126,22 +129,26 @@ const ProductDetails = ({
             <span>{returnPolicy}</span>
           </div>
           <div className="flex flex-col gap-10 mt-8 max-md:hidden">
-            <div>
-              <span>Quantity:</span>
-              <SetQuantity />
-            </div>
-            <AddToCart />
+            <span>Quantity:</span>
+            <SetQuantity />
           </div>
         </div>
       </div>
       {/* reviews */}
       <ProductReviews reviews={reviews || []} />
+
+      {/* related products */}
+      <div className="lg:px-16 md:px-8 px-4 mb-28">
+        <h3 className="mb-10 font-semibold text-gray-700 text-2xl max-md:text-xl">
+          Related products
+        </h3>
+        <ProductCards category={category} />
+      </div>
+
+      {/* for mobile devices add to cart */}
       <div className="flex flex-col gap-10 mt-8 md:hidden px-4 mb-10 items-center">
-        <div>
-          <span>Quantity:</span>
-          <SetQuantity />
-        </div>
-        <AddToCart />
+        <span>Quantity:</span>
+        <SetQuantity />
       </div>
     </>
   );

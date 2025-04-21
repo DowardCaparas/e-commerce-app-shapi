@@ -12,6 +12,7 @@ const ProductPage = async (props: {
 
   return (
       <ProductDetails 
+        id={product.id}
         title={product.title} 
         price={product.price}
         discountPercentage={product.discountPercentage}
@@ -19,6 +20,7 @@ const ProductPage = async (props: {
         brand={product.brand}
         reviews={product.reviews}
         images={product.images}
+        category={product.category}
         description={product.description}
         warrantyInformation={product.warrantyInformation}
         shippingInformation={product.shippingInformation}

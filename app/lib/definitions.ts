@@ -1,5 +1,5 @@
 export interface ProductDataTypes {
-    id?: number;
+    id: number;
     title: string;
     thumbnail?: string;
     price: number;
@@ -14,6 +14,7 @@ export interface ProductDataTypes {
         reviewerEmail: string;
     }[];
     images?: string[];
+    category: string;
     description?: string;
     warrantyInformation?: string;
     shippingInformation?: string;
