@@ -24,6 +24,7 @@ const LogIn = () => {
     checkAccountSignedIn();
   }, [router]); // Added router to the dependency array
 
+  // submit the user input to sign in
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

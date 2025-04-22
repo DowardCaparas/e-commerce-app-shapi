@@ -4,74 +4,83 @@ import { UserAccount } from "./definitions";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchAllProducts = async () => {
-    try {
-        const res = await fetch(`${API_URL}/products`);  
-        if(!res.ok) throw new Error(`Failed to fetch products, ${res.status}`);
-        const data = await res.json();
-        return data.products;
-    } catch (error) {
-        console.error("Error fetching all products:", error);
-        throw error;
-    }
-}
+  try {
+    const res = await fetch(`${API_URL}/products`);
+    if (!res.ok) throw new Error(`Failed to fetch products, ${res.status}`);
+    const data = await res.json();
+    return data.products;
+  } catch (error) {
+    console.error("Error fetching all products:", error);
+    throw error;
+  }
+};
 
 export const fetchProductById = async (id: number) => {
-    try {
-        const res = await fetch(`${API_URL}/products/${id}`);  
-        if(!res.ok) throw new Error(`Failed to fetch product, ${res.status}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching product:", error);
-        throw error;
-    }
-}
+  try {
+    const res = await fetch(`${API_URL}/products/${id}`);
+    if (!res.ok) throw new Error(`Failed to fetch product, ${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    throw error;
+  }
+};
 
 export const fetchProductByCategory = async (category: string) => {
-    try {
-        const res = await fetch(`${API_URL}/products/category/${category}`);
-        if(!res.ok) throw new Error(`Failed to fetch product by category, ${res.status}`);
-        const data = await res.json();
-        return data.products;
-    } catch (error) {
-        console.error("Error fetching product by category:", error);
-        throw error;
-    }
-}
+  try {
+    const res = await fetch(`${API_URL}/products/category/${category}`);
+    if (!res.ok)
+      throw new Error(`Failed to fetch product by category, ${res.status}`);
+    const data = await res.json();
+    return data.products;
+  } catch (error) {
+    console.error("Error fetching product by category:", error);
+    throw error;
+  }
+};
 
 export const fetchCategoryList = async () => {
-    try {
-        const res = await fetch(`${API_URL}/products/category-list`);
-        if(!res.ok) throw new Error(`Failed to fetch category list, ${res.status}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching category list:", error);
-        throw error;
-    }
-}
+  try {
+    const res = await fetch(`${API_URL}/products/category-list`);
+    if (!res.ok)
+      throw new Error(`Failed to fetch category list, ${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching category list:", error);
+    throw error;
+  }
+};
 
 export const fetchProductsBySearch = async (search: string) => {
-    try {
-        const res = await fetch(`${API_URL}/products/search?q=${search}`);  
-        if(!res.ok) throw new Error(`Failed to fetch category list, ${res.status}`);
-        const data = await res.json();
-        return data.products;
-    } catch (error) {
-        console.error("Error fetching product by search:", error);
-        throw error;
-    }
-}
+  try {
+    const res = await fetch(`${API_URL}/products/search?q=${search}`);
+    if (!res.ok)
+      throw new Error(`Failed to fetch category list, ${res.status}`);
+    const data = await res.json();
+    return data.products;
+  } catch (error) {
+    console.error("Error fetching product by search:", error);
+    throw error;
+  }
+};
 
-export const fetchAccounts = async () => {
-    try {
-        const data = await sql<UserAccount>`
-            SELECT * FROM accounts;
+export const fetchAccounts = async (query: string) => {
+  try {
+    const data = await sql<UserAccount>`
+            SELECT * 
+            FROM accounts
+            WHERE 
+                name ILIKE ${`%${query}%`} OR
+                username ILIKE ${`%${query}%`} OR
+                email ILIKE ${`%${query}%`} OR
+                address ILIKE ${`%${query}%`}
+            ORDER BY name
         `;
-        console.log(data.rows);
-        return data.rows;
-    } catch (error) {
-        console.error("Dtabase error:", error);
-        throw new Error("Failed to fetch accounts");
-    }
-}
+    return data.rows;
+  } catch (error) {
+    console.error("Dtabase error:", error);
+    throw new Error("Failed to fetch accounts");
+  }
+};
