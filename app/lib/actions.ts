@@ -2,8 +2,7 @@ import { z } from "zod";
 
 const AddUserFormSchema = z
   .object({
-    firstname: z.string().min(1, { message: "First name is required." }),
-    lastname: z.string().min(1, { message: "Last name is required." }),
+    name: z.string().min(1, { message: " name is required." }),
     username: z.string().min(1, { message: "Email is required." }),
     email: z
       .string({ message: "Please enter a valid email address" })
@@ -23,8 +22,7 @@ const AddUserFormSchema = z
 
 export type AddUserFormState = {
   errors?: {
-    firstname?: string[];
-    lastname?: string[];
+    name?: string[];
     username?: string[];
     email?: string[];
     password?: string[];
@@ -32,8 +30,7 @@ export type AddUserFormState = {
     role?: string[];
   };
   values?: {
-    firstname?: string;
-    lastname?: string;
+    name?: string;
     username?: string;
     email?: string;
     role?: string;
@@ -47,8 +44,7 @@ export const CreateUser = async (
 ) => {
   try {
     const form = {
-      firstname: formData.get("firstname")?.toString().trim() || "",
-      lastname: formData.get("lastname")?.toString().trim() || "",
+      name: formData.get("name")?.toString().trim() || "",
       username: formData.get("username")?.toString().trim() || "",
       password: formData.get("password")?.toString() || "",
       confirm_password: formData.get("confirm_password")?.toString() || "",
@@ -66,8 +62,7 @@ export const CreateUser = async (
       return {
         errors: formattedErrors,
         values: {
-            firstname: formData.get("firstname")?.toString(),
-            lastname: formData.get("lastname")?.toString(),
+            name: formData.get("firstname")?.toString(),
             username: formData.get("username")?.toString(),
             email: formData.get("email")?.toString(),
             role: formData.get("role")?.toString(),
@@ -80,8 +75,7 @@ export const CreateUser = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        firstName: form.firstname,
-        lastName: form.lastname,
+        name: form.name,
         username: form.username,
         email: form.email,
         password: form.password,

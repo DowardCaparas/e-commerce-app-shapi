@@ -1,3 +1,6 @@
+import { sql } from "@vercel/postgres";
+import { UserAccount } from "./definitions";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchAllProducts = async () => {
@@ -60,38 +63,15 @@ export const fetchProductsBySearch = async (search: string) => {
     }
 }
 
-export const fetchUsersBySearch = async (search: string) => {
+export const fetchAccounts = async () => {
     try {
-        const res = await fetch(`${API_URL}/users/search?q=${search}`);
-        if(!res.ok) throw new Error(`Failed to fetch users by search, ${res.status}`);
-        const data = await res.json();
-        return data.users;
+        const data = await sql<UserAccount>`
+            SELECT * FROM accounts;
+        `;
+        console.log(data.rows);
+        return data.rows;
     } catch (error) {
-        console.error("Error fetching users by search:", error);
-        throw error;
-    }
-}
-
-export const fetchUserById= async (id: number) => {
-    try {
-        const res = await fetch(`${API_URL}/users/${id}`);
-        if(!res.ok) throw new Error(`Failed to fetch user, ${res.status}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching user:", error);
-        throw error;
-    }
-}
-
-export const fetchUserCart = async (id: number) => {
-    try {
-        const res = await fetch(`${API_URL}/users/${id}/carts`);
-        if(!res.ok) throw new Error(`Failed to fetch user carts, ${res.status}`);
-        const data = await res.json();
-        return data.carts;
-    } catch (error) {
-        console.error("Error fetching user cart:", error);
-        throw error;
+        console.error("Dtabase error:", error);
+        throw new Error("Failed to fetch accounts");
     }
 }

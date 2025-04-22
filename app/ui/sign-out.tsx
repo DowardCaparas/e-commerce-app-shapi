@@ -8,7 +8,7 @@ const SignOut = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     router.push("/login");
   };
 

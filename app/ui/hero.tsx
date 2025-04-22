@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <section className="flex max-md:flex-col-reverse justify-between items-center gap-10 mt-20 mb-14">
+    <section className="flex max-md:flex-col-reverse justify-between max-md:items-center gap-10 mt-20 mb-14">
       <div className="md:w-[50%]">
         <h1 className="mb-2 xl:text-6xl lg:text-5xl sm:text-4xl text-2xl font-bold xl:leading-18 max-md:text-center">
           From Daily Essentials to Hidden Gems — We&apos;ve Got It All.

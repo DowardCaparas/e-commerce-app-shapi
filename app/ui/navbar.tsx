@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from "../context/auth-context";
 
 const NavBar = () => {
-  const { user } = useAuth();
 
   return (
     <nav
@@ -22,17 +20,6 @@ const NavBar = () => {
         Shapi
       </Link>
 
-      {!user ? (
-        <Link href="/login">Log In</Link>
-      ) : (
-        <Link href="/dashboard">
-          {user.image ? (
-            <Image src={user.image} alt="User profile" width={40} height={40} />
-          ) : (
-            <div className="w-12 h-12 bg-gray-300 rounded-full" />
-          )}
-        </Link>
-      )}
     </nav>
   );
 };

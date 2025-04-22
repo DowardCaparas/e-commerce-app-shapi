@@ -11,7 +11,7 @@ const CreateAccount = () => {
   return (
     <div className="lg:px-16 md:px-8 px-4 py-28">
       <div
-        className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col items-center gap-6 py-6
+        className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col items-center py-6
   rounded-lg shadow-sm"
       >
         <>
@@ -23,39 +23,19 @@ const CreateAccount = () => {
             className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10"
           >
             <div className="inline-grid">
-              <label htmlFor="firstname">First name</label>
+              <label htmlFor="name">Name</label>
               <input
-                id="firstname"
+                id="name"
                 type="text"
-                name="firstname"
-                defaultValue={state.values?.firstname ?? ""}
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
-                aria-describedby="firstname_error"
+                name="name"
+                defaultValue={state.values?.name ?? ""}
+                className="border border-orange-500 h-10 pl-2 mt-2"
+                aria-describedby="name_error"
               />
             </div>
-            <div id="firstname_error" aria-live="polite" aria-atomic="true">
-              {state.errors?.firstname &&
-                state.errors.firstname.map((error: string) => (
-                  <p className="text-sm text-red-500" key={error}>
-                    {error}
-                  </p>
-                ))}
-            </div>
-
-            <div className="inline-grid">
-              <label htmlFor="lastname">Last name</label>
-              <input
-                id="lastname"
-                type="text"
-                name="lastname"
-                defaultValue={state.values?.lastname ?? ""}
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
-                aria-describedby="lastname_error"
-              />
-            </div>
-            <div id="lastname_error" aria-live="polite" aria-atomic="true">
-              {state.errors?.lastname &&
-                state.errors.lastname.map((error: string) => (
+            <div className="-mt-5" id="name_error" aria-live="polite" aria-atomic="true">
+              {state.errors?.name &&
+                state.errors.name.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
                     {error}
                   </p>
@@ -69,11 +49,11 @@ const CreateAccount = () => {
                 type="text"
                 name="username"
                 defaultValue={state.values?.username ?? ""}
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
+                className="border border-orange-500 h-10 pl-2 mt-2"
                 aria-describedby="username_error"
               />
             </div>
-            <div id="username_error" aria-live="polite" aria-atomic="true">
+            <div className="-mt-5" id="username_error" aria-live="polite" aria-atomic="true">
               {state.errors?.username &&
                 state.errors.username.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -89,11 +69,11 @@ const CreateAccount = () => {
                 type="text"
                 name="email"
                 defaultValue={state.values?.email ?? ""}
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
+                className="border border-orange-500 h-10 pl-2 mt-2"
                 aria-describedby="email_error"
               />
             </div>
-            <div id="email_error" aria-live="polite" aria-atomic="true">
+            <div className="-mt-5" id="email_error" aria-live="polite" aria-atomic="true">
               {state.errors?.email &&
                 state.errors.email.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -108,11 +88,11 @@ const CreateAccount = () => {
                 id="password"
                 type="password"
                 name="password"
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
+                className="border border-orange-500 h-10 pl-2 mt-2"
                 aria-describedby="password_error"
               />
             </div>
-            <div id="password_error" aria-live="polite" aria-atomic="true">
+            <div className="-mt-5" id="password_error" aria-live="polite" aria-atomic="true">
               {state.errors?.password &&
                 state.errors.password.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -127,11 +107,11 @@ const CreateAccount = () => {
                 id="confirm_password"
                 type="password"
                 name="confirm_password"
-                className="bg-gray-100 h-10 pl-2 mt-2 shadow-sm"
+                className="border border-orange-500 h-10 pl-2 mt-2"
                 aria-describedby="confirm_password_error"
               />
             </div>
-            <div
+            <div className="-mt-5"
               id="confirm_password_error"
               aria-live="polite"
               aria-atomic="true"
@@ -169,7 +149,7 @@ const CreateAccount = () => {
                 <label htmlFor="admin">Admin</label>
               </div>
             </fieldset>
-            <div id="role_error" aria-live="polite" aria-atomic="true">
+            <div className="-mt-5" id="role_error" aria-live="polite" aria-atomic="true">
               {state.errors?.role &&
                 state.errors.role.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
