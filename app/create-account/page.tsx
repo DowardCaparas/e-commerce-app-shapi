@@ -2,6 +2,7 @@
 
 import { useActionState, useTransition } from "react";
 import { AddUserFormState, CreateUser } from "../lib/actions";
+import Link from "next/link";
 
 const CreateAccount = () => {
   const initialState: AddUserFormState = { message: null, errors: {} };
@@ -16,7 +17,7 @@ const CreateAccount = () => {
       >
         <>
           <span className="md:text-2xl text-xl font-medium">
-            Create an account
+            Create your account
           </span>
           <form
             action={(formData) => setTransition(() => formAction(formData))}
@@ -33,7 +34,12 @@ const CreateAccount = () => {
                 aria-describedby="name_error"
               />
             </div>
-            <div className="-mt-5" id="name_error" aria-live="polite" aria-atomic="true">
+            <div
+              className="-mt-5"
+              id="name_error"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {state.errors?.name &&
                 state.errors.name.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -53,7 +59,12 @@ const CreateAccount = () => {
                 aria-describedby="username_error"
               />
             </div>
-            <div className="-mt-5" id="username_error" aria-live="polite" aria-atomic="true">
+            <div
+              className="-mt-5"
+              id="username_error"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {state.errors?.username &&
                 state.errors.username.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -73,7 +84,12 @@ const CreateAccount = () => {
                 aria-describedby="email_error"
               />
             </div>
-            <div className="-mt-5" id="email_error" aria-live="polite" aria-atomic="true">
+            <div
+              className="-mt-5"
+              id="email_error"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {state.errors?.email &&
                 state.errors.email.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -92,7 +108,12 @@ const CreateAccount = () => {
                 aria-describedby="password_error"
               />
             </div>
-            <div className="-mt-5" id="password_error" aria-live="polite" aria-atomic="true">
+            <div
+              className="-mt-5"
+              id="password_error"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {state.errors?.password &&
                 state.errors.password.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -111,7 +132,8 @@ const CreateAccount = () => {
                 aria-describedby="confirm_password_error"
               />
             </div>
-            <div className="-mt-5"
+            <div
+              className="-mt-5"
               id="confirm_password_error"
               aria-live="polite"
               aria-atomic="true"
@@ -129,9 +151,9 @@ const CreateAccount = () => {
               <div className="flex items-center gap-2 py-3">
                 <input
                   id="user"
-                  type="radio" 
+                  type="radio"
                   name="role"
-                  value="user" 
+                  value="user"
                   defaultChecked={state.values?.role === "user"}
                   className="cursor-pointer"
                 />
@@ -149,7 +171,12 @@ const CreateAccount = () => {
                 <label htmlFor="admin">Admin</label>
               </div>
             </fieldset>
-            <div className="-mt-5" id="role_error" aria-live="polite" aria-atomic="true">
+            <div
+              className="-mt-5"
+              id="role_error"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               {state.errors?.role &&
                 state.errors.role.map((error: string) => (
                   <p className="text-sm text-red-500" key={error}>
@@ -167,6 +194,15 @@ const CreateAccount = () => {
             </button>
           </form>
         </>
+        <div className="flex items-center gap-2">
+          <span>Have an account?</span>
+          <Link
+            href="/login"
+            className="font-medium text-blue-700 hover:underline active:scale-95"
+          >
+            Back to sign in
+          </Link>
+        </div>
       </div>
     </div>
   );

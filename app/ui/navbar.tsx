@@ -20,6 +20,10 @@ const NavBar = () => {
         Shapi
       </Link>
 
+      <Link href="/login" className="font-medium">
+        Sign in
+      </Link>
+
     </nav>
   );
 };

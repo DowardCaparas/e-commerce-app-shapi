@@ -32,7 +32,7 @@ const SideNav = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const checkAccountSignedIn = async () => {
       const token = localStorage.getItem("userId");
 
       if (!token) {
@@ -41,7 +41,7 @@ const SideNav = () => {
       }
     };
 
-    fetchUser();
+    checkAccountSignedIn();
   }, [router]); // Added router to the dependency array
 
   return (

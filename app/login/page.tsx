@@ -1,13 +1,28 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LogIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // Check if already signed in
+  useEffect(() => {
+    const checkAccountSignedIn = async () => {
+      const token = localStorage.getItem("userId");
+
+      if (token) {
+        router.push("/dashboard");
+        return;
+      }
+    };
+
+    checkAccountSignedIn();
+  }, [router]); // Added router to the dependency array
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,13 +36,12 @@ const LogIn = () => {
     const data = await res.json();
 
     if (res.ok) {
-      localStorage.setItem("userId", data.id);  // ✅ Store userId in localStorage
+      localStorage.setItem("userId", data.id); // ✅ Store userId in localStorage
       alert("Login successful!");
       router.push("/dashboard");
     } else {
       setError(data.message || "Login failed");
     }
-    
   };
 
   return (
@@ -38,7 +52,7 @@ const LogIn = () => {
       >
         <>
           <span className="md:text-2xl text-xl font-medium">
-            Sign in you account
+            Sign in your account
           </span>
           <form
             onSubmit={handleSubmit}
@@ -79,6 +93,15 @@ const LogIn = () => {
             </button>
           </form>
         </>
+        <div className="flex items-center gap-2">
+          <span>Have an account?</span>
+          <Link
+            href="/create-account"
+            className="font-medium text-blue-700 hover:underline active:scale-95"
+          >
+            Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );
