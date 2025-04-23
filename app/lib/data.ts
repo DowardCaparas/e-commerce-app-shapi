@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { UserAccount } from "./definitions";
+import {Cart, UserAccount } from "./definitions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -84,3 +84,33 @@ export const fetchAccounts = async (query: string) => {
     throw new Error("Failed to fetch accounts");
   }
 };
+
+// fetch all cart items
+export const fetchCart = async (id: string) => {
+  try {
+    const data = await sql<Cart>`
+      SELECT *
+      FROM cart
+      WHERE userid = ${id}
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Failed to fetch cart");
+  }
+};
+
+// fetch cart quantity
+export const fetchCartQuantity = async () => {
+  try {
+    const data = await sql<{count: number}>`
+      SELECT COUNT(*) AS count
+      FROM cart
+    `;
+    return data.rows[0].count;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Failed to fetch cart");
+  }
+};
+

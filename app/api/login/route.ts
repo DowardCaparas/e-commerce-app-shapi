@@ -22,8 +22,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Invalid username or password" }, { status: 401 });
     }
 
-    return NextResponse.json({ message: "Login successful", userId: user.userId }, { status: 200 });
-
+    return NextResponse.json(
+      { message: "Login successful", userId: user.id, role: user.role },
+      { status: 200 }
+    );
+    
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });

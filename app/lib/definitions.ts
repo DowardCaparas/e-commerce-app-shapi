@@ -54,3 +54,14 @@ export type UserAccount = {
   address: string;
   role: string;
 };
+
+export interface Cart {
+  id: string;
+  userid: string;
+  productid: number;
+  name: string;
+  price: number;
+  thumbnail: string;
+  quantity: number;
+  date: string;
+};

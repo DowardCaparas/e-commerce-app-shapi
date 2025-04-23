@@ -9,6 +9,7 @@ const SignOut = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     router.push("/login");
   };
 

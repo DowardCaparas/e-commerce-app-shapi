@@ -3,16 +3,12 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const links = [
-  {
-    label: "Dashboard",
-    path: "/dashboard",
-    icon: "/gauge.svg",
-    role: "user",
-  },
+  { label: "Dashboard", path: "/dashboard", icon: "/gauge.svg", role: "admin" },
+  { label: "Cart", path: "/dashboard/cart", icon: "/cart.svg", role: "user" },
   {
     label: "Users",
     path: "/dashboard/users",
@@ -27,54 +23,80 @@ const links = [
   },
 ];
 
+type LinksTypes = {
+  label: string;
+  path: string;
+  icon: string;
+  role: string;
+};
+
 const SideNav = () => {
+  const [role, setRole] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [showLinks, setShowLinks] = useState(false); // new state for delay
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const checkAccountSignedIn = async () => {
-      const token = localStorage.getItem("userId");
+    const storedToken = localStorage.getItem("userId");
+    const storedRole = localStorage.getItem("userRole");
 
-      if (!token) {
-        router.push("/login");
-        return;
-      }
-    };
+    if (!storedToken) {
+      router.push("/login");
+    } else {
+      setToken(storedToken);
+      setRole(storedRole);
 
-    checkAccountSignedIn();
-  }, [router]); // Added router to the dependency array
+      // delay link rendering
+      const timeout = setTimeout(() => {
+        setShowLinks(true);
+      }, 20); // 300ms delay, tweak as needed
+
+      return () => clearTimeout(timeout); // cleanup
+    }
+  }, [router]);
+
+  const renderLinks = (filteredLinks: LinksTypes[]) =>
+    filteredLinks.map((link) => (
+      <Link
+        key={link.label}
+        href={link.label === "Cart" ? `${link.path}/${token}` : link.path}
+        className={`flex p-5 gap-3 w-full ${
+          pathname === link.path ||
+          pathname === `${link.path}/${token}`
+            ? "bg-green-200"
+            : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
+        }`}
+      >
+        <Image src={link.icon} alt={link.label} width={20} height={20} />
+        <span className="font-medium max-md:hidden">{link.label}</span>
+      </Link>
+    ));
 
   return (
     <div className="h-full bg-white">
-      <div className="bg-gray-100 w-full h-36 p-5flex flex-col justify-around gap-10">
-        <span className="text-xl font-semibold">Shapi</span>
+      <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden">
+        <Image
+          src="/images/heroBG.webp"
+          alt="Big Cart image illustration"
+          width={300}
+          height={300}
+          className="md:w-[70%] sm:w-[25%] w-[40%] mx-auto"
+        />
       </div>
-      <div className="flex md:flex-col ">
-        <Fragment>
-          {links
-            .map((link) => (
-              <Link
-                key={link.label}
-                href={link.path}
-                className={`flex p-5 gap-3 w-full
-             ${
-               pathname === link.path
-                 ? "bg-green-200"
-                 : `hover:bg-gray-100 active:bg-gray-200 transition-transform  duration-100 ease-in`
-             }
-         `}
-              >
-                <Image
-                  src={link.icon}
-                  alt={link.label}
-                  width={20}
-                  height={20}
-                  className="object-contain max-md:mx-auto"
-                />
-                <span className="font-medium max-md:hidden">{link.label}</span>
-              </Link>
-            ))}
-        </Fragment>
+      <div className="flex md:flex-col">
+        {showLinks && (
+          <Fragment>
+            {/* Filter the side nav links based on the user type */}
+            {renderLinks(
+              role === "user"
+                ? links.filter((link) => link.role === "user")
+                : links.filter(
+                    (link) => link.role === "admin" || link.label === "Products"
+                  )
+            )}
+          </Fragment>
+        )}
       </div>
     </div>
   );

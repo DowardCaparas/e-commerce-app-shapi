@@ -8,92 +8,108 @@ const LogIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   // Check if already signed in
   useEffect(() => {
-    const checkAccountSignedIn = async () => {
-      const token = localStorage.getItem("userId");
+    const token = localStorage.getItem("userId");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
-      if (token) {
-        router.push("/dashboard");
-        return;
-      }
-    };
-
-    checkAccountSignedIn();
-  }, [router]); // Added router to the dependency array
-
-  // submit the user input to sign in
+  // Submit the user input to sign in
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
+      setLoading(false);
 
-    if (res.ok) {
-      localStorage.setItem("userId", data.id); // ✅ Store userId in localStorage
-      alert("Login successful!");
-      router.push("/dashboard");
-    } else {
-      setError(data.message || "Login failed");
+      if (res.ok && data?.userId && data?.role) {
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("userRole", data.role);
+
+        if (data.role === "user") {
+          router.push(`/dashboard/cart/${data.userId}`);
+        } else {
+          router.push("/dashboard");
+        }
+
+        // Refresh the page to reload components using localStorage
+        setTimeout(() => {
+          window.location.reload();
+        }, 50); // slight delay to allow navigation
+
+      } else {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        setError(data.message || "Login failed");
+      }
+    } catch (err) {
+      setLoading(false);
+      console.error("Failed to add account:", err);
+      setError("Something went wrong. Please try again.",);
     }
   };
 
   return (
     <div className="lg:px-16 md:px-8 px-4 py-28">
-      <div
-        className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col items-center py-6
-          rounded-lg shadow-sm"
-      >
-        <>
-          <span className="md:text-2xl text-xl font-medium">
-            Sign in your account
-          </span>
-          <form
-            onSubmit={handleSubmit}
-            className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10"
+      <div className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col items-center py-6 rounded-lg shadow-sm">
+        <span className="md:text-2xl text-xl font-medium">
+          Sign in your account
+        </span>
+
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10"
+        >
+          <div className="inline-grid">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border border-orange-500 h-10 pl-2 mt-2"
+              required
+            />
+          </div>
+
+          <div className="inline-grid">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border border-orange-500 h-10 pl-2 mt-2"
+              required
+            />
+          </div>
+
+          {error && <p className="text-red-500">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="py-2 px-6 text-white text-xl font-medium rounded-lg shadow-md cursor-pointer bg-orange-600 hover:bg-orange-500 active:bg-orange-600 disabled:opacity-50"
           >
-            <div className="inline-grid">
-              <label htmlFor="username">Username</label>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="border border-orange-500 h-10 pl-2 mt-2"
-              />
-            </div>
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
+        </form>
 
-            <div className="inline-grid">
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border border-orange-500 h-10 pl-2 mt-2"
-              />
-            </div>
-
-            {error && <p className="text-red-500">{error}</p>}
-
-            <button
-              type="submit"
-              className="py-2 px-6 text-white text-xl font-medium rounded-lg shadow-md
-    cursor-pointer bg-orange-600 hover:bg-orange-500 active:bg-orange-600"
-            >
-              Sign in
-            </button>
-          </form>
-        </>
         <div className="flex items-center gap-2">
           <span>Have an account?</span>
           <Link
