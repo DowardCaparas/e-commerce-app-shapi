@@ -66,7 +66,7 @@ const NavBar = () => {
   return (
     <nav
       className="bg-gradient-to-b from-[#F6402D] to-[#FE6333] text-white flex justify-between items-center 
-      lg:px-16 md:px-8 px-4 py-2"
+      lg:px-16 md:px-8 px-4 py-3"
     >
       <Link
         href="/"
