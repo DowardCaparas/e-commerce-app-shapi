@@ -40,7 +40,7 @@ const SideNav = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("userId");
     const storedRole = localStorage.getItem("userRole");
-
+    console.log(storedToken);
     if (!storedToken) {
       router.push("/login");
     } else {

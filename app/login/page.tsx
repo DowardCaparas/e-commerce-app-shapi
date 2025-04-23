@@ -14,6 +14,7 @@ const LogIn = () => {
   // Check if already signed in
   useEffect(() => {
     const token = localStorage.getItem("userId");
+    console.log(token);
     if (token) {
       router.push("/dashboard");
     }
@@ -38,7 +39,7 @@ const LogIn = () => {
       if (res.ok && data?.userId && data?.role) {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userRole", data.role);
-
+        
         if (data.role === "user") {
           router.push(`/dashboard/cart/${data.userId}`);
         } else {
@@ -49,7 +50,6 @@ const LogIn = () => {
         setTimeout(() => {
           window.location.reload();
         }, 50); // slight delay to allow navigation
-
       } else {
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");
@@ -58,7 +58,7 @@ const LogIn = () => {
     } catch (err) {
       setLoading(false);
       console.error("Failed to add account:", err);
-      setError("Something went wrong. Please try again.",);
+      setError("Something went wrong. Please try again.");
     }
   };
 
