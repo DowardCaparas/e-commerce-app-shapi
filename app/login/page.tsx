@@ -27,7 +27,7 @@ const LogInPage = () => {
     setError("");
 
     try {
-      const res = await fetch("/api/Page", {
+      const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

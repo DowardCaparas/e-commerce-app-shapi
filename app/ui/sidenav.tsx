@@ -98,7 +98,7 @@ const SideNav = () => {
               role === "user"
                 ? links.filter((link) => link.role === "user")
                 : links.filter(
-                    (link) => link.role === "user" || link.label === "Products" || link.label === "Settings"
+                    (link) => link.role === "admin" || link.label === "Products" || link.label === "Settings"
                   )
             )}
           </Fragment>

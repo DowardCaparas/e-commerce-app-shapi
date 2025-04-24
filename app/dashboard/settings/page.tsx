@@ -2,7 +2,8 @@ import React from 'react'
 
 const AccountSettingsPage = () => {
   return (
-    <div>AccountSettingsPage</div>
+    <div>AccountSettingsPage
+    </div>
   )
 }
 
