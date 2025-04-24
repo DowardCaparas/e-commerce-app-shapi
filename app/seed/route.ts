@@ -1,6 +1,6 @@
 // import bcrypt from "bcryptjs";
 import { db } from "@vercel/postgres";
-import {  cart } from "../lib/placeholder-data";
+import { cart } from "../lib/placeholder-data";
 
 const client = await db.connect();
 
@@ -40,6 +40,22 @@ const client = await db.connect();
 //   return insertedAccounts;
 // }
 
+// export async function GET() {
+//   try {
+//     await client.sql`BEGIN`;
+//     await seedAccounts();
+//     await client.sql`COMMIT`;
+//     return Response.json({ message: "Database seeded successfully" });
+//   } catch (error) {
+//     console.error("Seed error:", error);
+//     await client.sql`ROLLBACK`;
+//     return Response.json({ error: String(error) }, { status: 500 });
+//   }
+// }
+
+// ================================================================================
+// -===============================================================================
+
 async function seedCart() {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
@@ -72,11 +88,11 @@ async function seedCart() {
 export async function GET() {
   try {
     await client.sql`BEGIN`;
-     await seedCart();
+    await seedCart();
     await client.sql`COMMIT`;
     return Response.json({ message: "Database seeded successfully" });
   } catch (error) {
-    console.error("Seed error:", error); // ✅ Add this
+    console.error("Seed error:", error);
     await client.sql`ROLLBACK`;
     return Response.json({ error: String(error) }, { status: 500 });
   }
@@ -91,7 +107,7 @@ export async function GET() {
 
 //   try {
 //     await client.sql`DROP TABLE IF EXISTS cart`;
-//     console.log("Cart table dropped successfully.");
+//     console.log("cart table dropped successfully.");
 //     return Response.json({ message: "cart table dropped successfully" });
 //   } catch (error) {
 //     console.error("Error dropping cart table:", error);

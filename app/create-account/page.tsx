@@ -1,13 +1,13 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
-import { AddUserFormState, CreateUser } from "../lib/actions";
+import { addAccount, AddAccountFormState } from "../lib/actions";
 import Link from "next/link";
 
 const CreateAccount = () => {
-  const initialState: AddUserFormState = { message: null, errors: {} };
-  const [state, formAction] = useActionState(CreateUser, initialState);
-  const [isPending, setTransition] = useTransition();
+  const initialState: AddAccountFormState = { message: null, errors: {} };
+  const [state, formAction] = useActionState(addAccount, initialState);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <div className="lg:px-16 md:px-8 px-4 py-28">
@@ -20,7 +20,7 @@ const CreateAccount = () => {
             Create your account
           </span>
           <form
-            action={(formData) => setTransition(() => formAction(formData))}
+            action={(formData) => startTransition(() => formAction(formData))}
             className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10"
           >
             <div className="inline-grid">
@@ -187,8 +187,10 @@ const CreateAccount = () => {
 
             <button
               type="submit"
+              disabled={isPending}
               className="py-2 px-6 text-white text-xl font-medium rounded-lg shadow-md
-      cursor-pointer bg-orange-600 hover:bg-orange-500 active:bg-orange-600"
+              cursor-pointer bg-orange-600 hover:bg-orange-500 active:bg-orange-600 
+              disabled:cursor-not-allowed"
             >
               {isPending ? "Creating..." : "Create"}
             </button>
