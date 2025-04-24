@@ -5,7 +5,7 @@ import ProductCategories from "@/app/ui/product-categories";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-const ProductsPage = () => {
+const ProductPage = () => {
   const [search, setSearch] = useState("");
   return (
     <div>
@@ -27,4 +27,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default ProductPage;

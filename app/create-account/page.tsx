@@ -4,7 +4,7 @@ import { useActionState, useTransition } from "react";
 import { addAccount, AddAccountFormState } from "../lib/actions";
 import Link from "next/link";
 
-const CreateAccount = () => {
+const CreateAccountPage = () => {
   const initialState: AddAccountFormState = { message: null, errors: {} };
   const [state, formAction] = useActionState(addAccount, initialState);
   const [isPending, startTransition] = useTransition();
@@ -209,5 +209,4 @@ const CreateAccount = () => {
     </div>
   );
 };
-
-export default CreateAccount;
+ export default CreateAccountPage

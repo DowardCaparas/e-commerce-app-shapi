@@ -21,6 +21,12 @@ const links = [
     icon: "/package.svg",
     role: "user",
   },
+  {
+    label: "Settings",
+    path: "/dashboard/settings",
+    icon: "/settings.svg",
+    role: "user",
+  },
 ];
 
 type LinksTypes = {
@@ -69,7 +75,7 @@ const SideNav = () => {
         }`}
       >
         <Image src={link.icon} alt={link.label} width={20} height={20} />
-        <span className="font-medium max-md:hidden">{link.label}</span>
+        <span className="font-medium">{link.label}</span>
       </Link>
     ));
 
@@ -92,7 +98,7 @@ const SideNav = () => {
               role === "user"
                 ? links.filter((link) => link.role === "user")
                 : links.filter(
-                    (link) => link.role === "admin" || link.label === "Products"
+                    (link) => link.role === "user" || link.label === "Products" || link.label === "Settings"
                   )
             )}
           </Fragment>

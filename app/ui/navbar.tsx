@@ -2,15 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
+import SignOut from "./sign-out";
 
 const NavBar = () => {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [link, setLink] = useState("/login");
   const [label, setLabel] = useState("Sign in");
   const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true); // prevents hydration mismatch on SSR
@@ -53,20 +52,10 @@ const NavBar = () => {
     getCartQuantity();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
-    router.push("/login");
-    // Refresh the page to reload components using localStorage
-    setTimeout(() => {
-      window.location.reload();
-    }, 20); // slight delay to allow navigation
-  };
-
   return (
     <nav
-      className="bg-gradient-to-b from-[#F6402D] to-[#FE6333] text-white flex justify-between items-center 
-      lg:px-16 md:px-8 px-4 py-3"
+      className="bg-gradient-to-b from-[#F6402D] to-[#FE6333] text-white flex justify-between
+       items-center lg:px-12 md:px-4 px-2 py-1"
     >
       <Link
         href="/"
@@ -85,7 +74,7 @@ const NavBar = () => {
       {isClient && (
         <div className="flex items-center gap-4">
           {label === "Dashboard" ? (
-            <div className="flex items-center gap-4">
+            <Fragment>
               <Link
                 href={link}
                 className="font-medium bg-white p-2 rounded-full hover:bg-gray-100 active:scale-95"
@@ -94,29 +83,25 @@ const NavBar = () => {
                 <Image
                   src="/cart.svg"
                   alt="cart icon"
-                  width={22}
-                  height={22}
+                  width={20}
+                  height={20}
                   className="cursor-pointer"
                 />
               </Link>
               {/* cart items quantity */}
               {cartQuantity > 0 && (
                 <div className="absolute top-0 ml-6 mt-3">
-                  <span className="bg-red-600 p-1 rounded-full text-white font-semibold text-sm">
+                  <span className="bg-red-600 border-2 border-white p-1 rounded-full 
+                  text-white font-semibold text-xs">
                     {cartQuantity}
                   </span>
                 </div>
               )}
 
-              <button
-                onClick={handleLogout}
-                className="bg-white text-orange-600 px-4 py-1 rounded-md font-medium 
-                hover:bg-orange-100 active:scale-95 cursor-pointer"
-                aria-label="Logout"
-              >
-                Logout
-              </button>
-            </div>
+             <div>
+             <SignOut/>
+             </div>
+            </Fragment>
           ) : (
             <Link href={link} className="font-medium" aria-label={label}>
               {label}

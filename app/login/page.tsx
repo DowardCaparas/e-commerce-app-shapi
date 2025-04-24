@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const LogIn = () => {
+const LogInPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,7 +27,7 @@ const LogIn = () => {
     setError("");
 
     try {
-      const res = await fetch("/api/login", {
+      const res = await fetch("/api/Page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -124,4 +124,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default LogInPage;

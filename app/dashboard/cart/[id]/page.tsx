@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const Cart = async (props: {
+const UserCartPage = async (props: {
   params: Promise<{
     id: string;
   }>;
@@ -85,4 +85,4 @@ const Cart = async (props: {
   );
 };
 
-export default Cart;
+export default UserCartPage;

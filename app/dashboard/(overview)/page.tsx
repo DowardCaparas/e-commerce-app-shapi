@@ -1,12 +1,9 @@
-import SignOut from "@/app/ui/sign-out"
+import React from 'react'
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
-    <>  
-        Dashboard
-        <SignOut />
-    </>
+    <div>DashboardPage</div>
   )
 }
 
-export default Dashboard
+export default DashboardPage

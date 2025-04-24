@@ -1,7 +1,7 @@
 import Search from "@/app/ui/search";
 import Users from "@/app/ui/users";
 
-const Page = async (props: {
+const UsersPage = async (props: {
   searchParams?: Promise<{
     query?: string;
   }>;
@@ -19,4 +19,4 @@ const Page = async (props: {
   );
 };
 
-export default Page;
+export default UsersPage;
