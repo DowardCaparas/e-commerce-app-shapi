@@ -31,7 +31,7 @@ const Users = async ({ query }: { query: string }) => {
                           [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
               >
                 <td className="whitespace-nowrap px-3 py-4">{user.name}</td>
-                <td className="whitespace-nowrap px-3 py-4">{user.username}</td>
+                <td className="whitespace-nowrap px-3 py-4">@{user.username}</td>
                 <td className="whitespace-nowrap px-3 py-4">{user.email}</td>
                 <td className="whitespace-nowrap px-3 py-4">{user.address}</td>
                 <td>
@@ -54,15 +54,22 @@ const Users = async ({ query }: { query: string }) => {
           ?.filter((user) => user.role === "user")
           .map((user) => (
             <div key={user.id} className="bg-white rounded-lg px-5 py-8 border">
-              <div className="flex justify-between items-center">
-                <div className="inline-grid">
-                  <span className="md:text-xl text-lg font-medium">
+              <div className="flex flex-col gap-6">
+                <div className="inline-grid space-y-2">
+                  <span className="md:text-xl text-lg font-semibold">
                     {user.name}
                   </span>
-                  <span>{user.username}</span>
-                  <span>{user.email}</span>
-                  <span>{user.address}</span>
+                  <span className="">@{user.username}</span>
+                  <span className="">{user.email}</span>
+                  <span className="">{user.address}</span>
                 </div>
+                <Link
+                    href={`/dashboard/cart/${user.id}`}
+                    className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white py-2 px-4 
+                    rounded-lg font-semibold text-center"
+                  >
+                    View Cart
+                  </Link>
               </div>
             </div>
           ))}
