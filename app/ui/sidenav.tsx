@@ -103,7 +103,7 @@ const SideNav = () => {
                     (link) =>
                       link.role === "admin" ||
                       link.label === "Products" ||
-                      link.label === "Settings"
+                      link.label === "Account"
                   )
             )}
           </Fragment>
