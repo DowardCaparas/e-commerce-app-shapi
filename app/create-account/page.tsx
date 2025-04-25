@@ -1,11 +1,11 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
-import { addAccount, AddAccountFormState } from "../lib/actions";
+import { addAccount, AccountFormState } from "../lib/actions";
 import Link from "next/link";
 
 const CreateAccountPage = () => {
-  const initialState: AddAccountFormState = { message: null, errors: {} };
+  const initialState: AccountFormState = { message: null, errors: {} };
   const [state, formAction] = useActionState(addAccount, initialState);
   const [isPending, startTransition] = useTransition();
 

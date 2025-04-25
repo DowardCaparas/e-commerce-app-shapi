@@ -72,15 +72,25 @@ const UserCartPage = async (props: {
           })}
         </div>
       ) : (
-        <p>Cart is empty</p>
+        <div className="py-24 bg-gray-100 border rounded-lg flex flex-col gap-8 items-center">
+          <Image
+            src="/images/emptyCart.webp"
+            alt="empty cart icon"
+            width={120}
+            height={120}
+          />
+          <h3 className="font-medium text-2xl text-gray-500">Cart is empty</h3>
+        </div>
       )}
 
-      <div>
-        <h1 className="text-2xl font-semibold mt-8 mb-4">Summary</h1>
-        <span>
-          Total: $<span>{total}</span>
-        </span>
-      </div>
+      {cart.length > 0 && (
+        <>
+          <h1 className="text-2xl font-semibold mt-8 mb-4">Summary</h1>
+          <span>
+            Total: $<span>{total}</span>
+          </span>
+        </>
+      )}
     </div>
   );
 };

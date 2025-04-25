@@ -34,8 +34,7 @@ const LogInPage = () => {
       });
 
       const data = await res.json();
-      setLoading(false);
-
+      
       if (res.ok && data?.userId && data?.role) {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userRole", data.role);
@@ -50,6 +49,7 @@ const LogInPage = () => {
         setTimeout(() => {
           window.location.reload();
         }, 50); // slight delay to allow navigation
+        setLoading(false);
       } else {
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");

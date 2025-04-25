@@ -22,9 +22,9 @@ const links = [
     role: "user",
   },
   {
-    label: "Settings",
-    path: "/dashboard/settings",
-    icon: "/settings.svg",
+    label: "Account",
+    path: "/dashboard/account",
+    icon: "/user.svg",
     role: "user",
   },
 ];
@@ -63,21 +63,23 @@ const SideNav = () => {
   }, [router]);
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
-    filteredLinks.map((link) => (
-      <Link
-        key={link.label}
-        href={link.label === "Cart" ? `${link.path}/${token}` : link.path}
-        className={`flex p-5 gap-3 w-full ${
-          pathname === link.path ||
-          pathname === `${link.path}/${token}`
-            ? "bg-green-200"
-            : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
-        }`}
-      >
-        <Image src={link.icon} alt={link.label} width={20} height={20} />
-        <span className="font-medium">{link.label}</span>
-      </Link>
-    ));
+    filteredLinks.map((link) => {
+      const linkWithToken = link.label === "Cart" || link.label === "Account";
+      return (
+        <Link
+          key={link.label}
+          href={linkWithToken ? `${link.path}/${token}` : link.path}
+          className={`flex p-5 gap-3 w-full max-md:justify-center ${
+            pathname === link.path || pathname === `${link.path}/${token}`
+              ? "bg-green-200"
+              : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
+          }`}
+        >
+          <Image src={link.icon} alt={link.label} width={20} height={20} />
+          <span className="font-medium max-md:hidden">{link.label}</span>
+        </Link>
+      );
+    });
 
   return (
     <div className="h-full bg-white">
@@ -98,7 +100,10 @@ const SideNav = () => {
               role === "user"
                 ? links.filter((link) => link.role === "user")
                 : links.filter(
-                    (link) => link.role === "admin" || link.label === "Products" || link.label === "Settings"
+                    (link) =>
+                      link.role === "admin" ||
+                      link.label === "Products" ||
+                      link.label === "Settings"
                   )
             )}
           </Fragment>

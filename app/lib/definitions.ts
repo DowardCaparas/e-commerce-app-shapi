@@ -50,9 +50,9 @@ export type UserAccount = {
   name: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   address: string;
-  role: string;
+  role?: string;
 };
 
 export interface Cart {
