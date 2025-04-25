@@ -10,6 +10,7 @@ const NavBar = () => {
   const [link, setLink] = useState("/login");
   const [label, setLabel] = useState("Sign in");
   const [isClient, setIsClient] = useState(false);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     setIsClient(true); // prevents hydration mismatch on SSR
@@ -20,8 +21,10 @@ const NavBar = () => {
     if (userRole && userId) {
       if (userRole === "user") {
         setLink(`/dashboard/cart/${userId}`);
+        setRole("user");
       } else {
         setLink(`/dashboard`);
+        setRole("admin");
       }
       setLabel("Dashboard");
     } else {
@@ -75,32 +78,52 @@ const NavBar = () => {
         <div className="flex items-center gap-4">
           {label === "Dashboard" ? (
             <Fragment>
-              <Link
-                href={link}
-                className="font-medium bg-white p-2 rounded-full hover:bg-gray-100 active:scale-95"
-                aria-label={label}
-              >
-                <Image
-                  src="/cart.svg"
-                  alt="cart icon"
-                  width={20}
-                  height={20}
-                  className="cursor-pointer"
-                />
-              </Link>
-              {/* cart items quantity */}
-              {cartQuantity > 0 && (
-                <div className="absolute top-0 ml-6 mt-3">
-                  <span className="bg-red-600 border-2 border-white p-1 rounded-full 
-                  text-white font-semibold text-xs">
-                    {cartQuantity}
-                  </span>
-                </div>
+              {role === "user" ? (
+                <Fragment>
+                  <Link
+                    href={link}
+                    className="font-medium bg-white p-1 rounded-full hover:bg-gray-100 active:scale-95"
+                    aria-label={label}
+                  >
+                    <Image
+                      src="/cart.svg"
+                      alt="cart icon"
+                      width={25}
+                      height={25}
+                      className="cursor-pointer"
+                    />
+                  </Link>
+                  {/* cart items quantity */}
+                  {cartQuantity > 0 && (
+                    <div className="absolute top-0 ml-6 mt-3">
+                      <span
+                        className="bg-red-600 border-2 border-white p-1 rounded-full 
+                text-white font-semibold text-xs"
+                      >
+                        {cartQuantity}
+                      </span>
+                    </div>
+                  )}
+                </Fragment>
+              ) : (
+                  <Link
+                    href={link}
+                    className="font-medium bg-white p-1 rounded-full hover:bg-gray-100 active:scale-95"
+                    aria-label={label}
+                  >
+                    <Image
+                      src="/user.svg"
+                      alt="user icon"
+                      width={25}
+                      height={25}
+                      className="cursor-pointer"
+                    />
+                  </Link>
               )}
 
-             <div>
-             <SignOut/>
-             </div>
+              <div>
+                <SignOut />
+              </div>
             </Fragment>
           ) : (
             <Link href={link} className="font-medium" aria-label={label}>
