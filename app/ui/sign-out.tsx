@@ -48,7 +48,7 @@ const SignOut = () => {
               </button>
               <button
                 onClick={() => setShowConfirm(false)}
-                className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600
                 active:scale-95 cursor-pointer"
               >
                 <span className="font-medium">Cancel</span>

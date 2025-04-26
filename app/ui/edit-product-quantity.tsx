@@ -35,10 +35,11 @@ const EditProductQuantity = ({ qty, productId }: { qty: number, productId: numbe
     if (userId) {
       updateProductQuantity();
     }
-  }, [quantity, productId]);
+  }, [router, quantity, productId]);
 
   return (
-    <div className="flex items-center gap-4 mt-2">
+    <div className="flex items-center gap-2">
+      <span>Qty:</span>
       <button
         onClick={handleDecrement}
         className="cursor-pointer px-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-sm shadow-sm font-medium text-lg"
