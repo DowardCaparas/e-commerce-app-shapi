@@ -1,5 +1,6 @@
 import { fetchAccountById } from "@/app/lib/data";
 import AccountProfile from "@/app/ui/account-profile";
+import React from "react";
 
 const AccountSettingsPage = async (props: {
   params: Promise<{

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import React from "react";
 
 const Search = ({ placeholder }: { placeholder: string }) => {
   const searchParams = useSearchParams(); //Allows you to access the parameters of the current URL
@@ -23,15 +24,15 @@ const Search = ({ placeholder }: { placeholder: string }) => {
   }, 300);
 
   return (
-    <div className="relative flex flex-1 flex-shrink-0 my-8">
+    <div className="relative flex flex-1 flex-shrink-0">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
 
       <input
         placeholder={placeholder}
-        className="peer block w-full rounded-md ring-2 ring-orange-500 py-[9px] pl-10 text-sm
-        placeholder:text-gray-500"
+        className="peer block w-full rounded-sm py-2 pl-10 text-sm my-6
+        placeholder:text-[#808084] bg-[#ECECEE] focus:bg-white"
         onChange={(e) => handleSearch(e.target.value)}
         // Keeping the URL and input in sync
         // To ensure the input field is in sync with the URL and will

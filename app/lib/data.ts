@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres";
 import { Cart, UserAccount } from "./definitions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const ITEMS_PER_PAGE = 9;
 
 export const fetchAllProducts = async () => {
   try {
@@ -66,7 +67,10 @@ export const fetchProductsBySearch = async (search: string) => {
   }
 };
 
-export const fetchAccounts = async (query: string) => {
+export const fetchAccounts = async (query: string, currentPage: number) => {
+
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
   try {
     const data = await sql<UserAccount>`
             SELECT * 
@@ -77,6 +81,7 @@ export const fetchAccounts = async (query: string) => {
                 email ILIKE ${`%${query}%`} OR
                 address ILIKE ${`%${query}%`}
             ORDER BY name
+            LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
     return data.rows;
   } catch (error) {
@@ -99,6 +104,21 @@ export const fetchAccountById = async (id: string) => {
   }
 };
 
+// accounts pages
+export const fetchAccountsPages = async () => {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM accounts
+    `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch account pages");
+  }
+};
+
 // fetch all cart items
 export const fetchCart = async (id: string) => {
   try {
@@ -106,6 +126,7 @@ export const fetchCart = async (id: string) => {
       SELECT *
       FROM cart
       WHERE userid = ${id}
+      ORDER BY date
     `;
     return data.rows;
   } catch (error) {

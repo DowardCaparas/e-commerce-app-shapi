@@ -4,6 +4,7 @@ import { useState, useEffect, useActionState, useTransition } from "react";
 import { UserAccount } from "../lib/definitions";
 import Image from "next/image";
 import { AccountFormState, updateAccount } from "../lib/actions";
+import React from "react";
 
 const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
   const [formData, setFormData] = useState({

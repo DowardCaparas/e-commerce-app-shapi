@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import ProductCards from "./product-card";
 import { fetchCategoryList } from "../lib/data";
 import {
@@ -10,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import React, { useEffect, useState } from "react";
 
 const ProductCategories = () => {
   const [category, setCategory] = useState("");

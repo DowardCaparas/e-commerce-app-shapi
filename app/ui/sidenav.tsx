@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const links = [
@@ -82,23 +82,23 @@ const SideNav = () => {
     });
 
   return (
-    <div className="h-full bg-white">
-      <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden">
+    <div className="md:h-full max-md:w-full bg-white max-md:border-2 max-md:fixed max-md:bottom-0 z-10">
+      <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden max-md:hidden">
         <Image
           src="/images/heroBG.webp"
           alt="Big Cart image illustration"
           width={300}
           height={300}
-          className="md:w-[70%] sm:w-[25%] w-[40%] mx-auto"
+          className="md:w-[70%] sm:w-[25%] w-[40%] mx-auto "
         />
       </div>
       <div className="flex md:flex-col">
         {showLinks && (
-          <Fragment>
+          <>
             {/* Filter the side nav links based on the user type */}
             {renderLinks(
               role === "user"
-                ? links.filter((link) => link.role === "user")
+                ? links.filter((link) => link.role === "user" || link.label === "Dashboard" )
                 : links.filter(
                     (link) =>
                       link.role === "admin" ||
@@ -106,7 +106,7 @@ const SideNav = () => {
                       link.label === "Account"
                   )
             )}
-          </Fragment>
+          </>
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@
 import ProductCards from "@/app/ui/product-card";
 import ProductCategories from "@/app/ui/product-categories";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const ProductPage = () => {
   const [search, setSearch] = useState("");
@@ -20,8 +20,8 @@ const ProductPage = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search products"
-          className="peer block w-full rounded-md ring-2 ring-orange-500 py-[9px] pl-10 text-sm
-        placeholder:text-gray-500 my-8"
+          className="peer block w-full rounded-sm py-2 pl-10 text-sm my-6
+        placeholder:text-[#808084] bg-[#ECECEE] focus:bg-white"
         />
         <Image
           src="/magnifying-glass.svg"

@@ -5,7 +5,7 @@ const client = await db.connect();
 async function listAccounts() {
     const data = await client.sql`
         SELECT *
-        FROM accounts;
+        FROM cart;
     `;
     return data.rows;
 }

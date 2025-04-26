@@ -1,10 +1,10 @@
 // Fetching data from database
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { fetchAccounts } from "../lib/data";
 import Link from "next/link";
 
-const Users = async ({ query }: { query: string }) => {
-  const users = await fetchAccounts(query); // from data file
+const Users = async ({ query, currentPage }: { query: string, currentPage: number }) => {
+  const users = await fetchAccounts(query, currentPage); // from data file
 
   const theads = ["Name", "Username", "Email", "Address", "Cart"];
 

@@ -1,6 +1,6 @@
-import React from "react";
 import { ProductDataTypes } from "../lib/definitions";
 import Image from "next/image";
+import React from "react";
 
 const ProductReviews = ({reviews}: {reviews?: ProductDataTypes['reviews']}) => {
   const ratingCount: { [key: number]: number } = {};

@@ -1,3 +1,4 @@
+import React from "react";
 
 const UserPage = async (props: {
   params: Promise<{

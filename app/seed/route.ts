@@ -66,6 +66,7 @@ async function seedCart() {
       productId INTEGER NOT NULL,
       name VARCHAR(255) NOT NULL,
       price NUMERIC(10,2) NOT NULL,
+      discount NUMERIC(10,2) NOT NULL,
       thumbnail TEXT NOT NULL,
       quantity INTEGER NOT NULL DEFAULT 1,
       date DATE NOT NULL
@@ -75,8 +76,9 @@ async function seedCart() {
   const insertedCart = await Promise.all(
     cart.map((crt) => {
       return client.sql`
-        INSERT INTO cart (userId, productId, name, price, thumbnail, quantity, date)
-        VALUES (${crt.userId}, ${crt.productId}, ${crt.name}, ${crt.price}, ${crt.thumbnail}, ${crt.quantity}, ${crt.date})
+        INSERT INTO cart (userId, productId, name, price, discount, thumbnail, quantity, date)
+        VALUES (${crt.userId}, ${crt.productId}, ${crt.name}, ${crt.price}, 
+        ${crt.discountPercentage}, ${crt.thumbnail}, ${crt.quantity}, ${crt.date})
         ON CONFLICT (id) DO NOTHING;
       `;
     })

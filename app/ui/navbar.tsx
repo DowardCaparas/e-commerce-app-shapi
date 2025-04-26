@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import SignOut from "./sign-out";
+import React from "react";
 
 const NavBar = () => {
   const [cartQuantity, setCartQuantity] = useState(0);

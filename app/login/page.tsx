@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const LogInPage = () => {
   const [username, setUsername] = useState("");
@@ -38,18 +38,15 @@ const LogInPage = () => {
       if (res.ok && data?.userId && data?.role) {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userRole", data.role);
-        
-        if (data.role === "user") {
-          router.push(`/dashboard/cart/${data.userId}`);
-        } else {
-          router.push("/dashboard");
-        }
 
         // Refresh the page to reload components using localStorage
         setTimeout(() => {
           window.location.reload();
         }, 50); // slight delay to allow navigation
         setLoading(false);
+
+        router.push("/dashboard");
+        
       } else {
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");

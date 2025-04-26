@@ -3,6 +3,7 @@
 import EditProfile from "@/app/ui/edit-profile";
 import Image from "next/image";
 import { UserAccount } from "../lib/definitions";
+import React from "react";
 
 interface AccountSettingsClientProps {
     account: UserAccount[];

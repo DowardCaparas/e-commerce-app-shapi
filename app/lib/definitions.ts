@@ -61,6 +61,7 @@ export interface Cart {
   productid: number;
   name: string;
   price: number;
+  discount: number;
   thumbnail: string;
   quantity: number;
   date: string;

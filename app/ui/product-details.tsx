@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ProductDataTypes } from "../lib/definitions";
-import { useState } from "react";
+import React, { useState } from "react";
 import SetQuantity from "./set-quantity";
 import ProductReviews from "./product-reviews";
 import ProductCards from "./product-card";
