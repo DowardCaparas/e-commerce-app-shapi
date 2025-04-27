@@ -34,12 +34,11 @@ const DeleteItemFromCart = ({ productId }: { productId: number }) => {
       });
       setIsDeleting(false);
       setShowConfirm(false); // close modal
-      router.refresh(); // Refresh the cart page after deletion
     } catch (error) {
       console.error("Failed to delete item from cart:", error);
       setShowConfirm(false); // close modal
-      setIsDeleting(false);
     }
+    router.refresh(); // Refresh the cart page after deletion
   };
 
   return (

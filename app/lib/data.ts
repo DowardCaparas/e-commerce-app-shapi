@@ -125,8 +125,8 @@ export const fetchCart = async (id: string) => {
     const data = await sql<CartItem>`
       SELECT *
       FROM cart
-      WHERE userid = ${id}
-      ORDER BY date DESC
+      WHERE userId = ${id}
+      ORDER BY name, date DESC
     `;
     return data.rows;
   } catch (error) {

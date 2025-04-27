@@ -40,7 +40,7 @@ export type UserAccount = {
 export interface CartItem {
   id?: string;
   userId?: string;
-  productId: number;
+  productid: number;
   name: string;
   price: number;
   discount: number;

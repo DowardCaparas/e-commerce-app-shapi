@@ -60,7 +60,7 @@ const SideNav = () => {
 
       return () => clearTimeout(timeout); // cleanup
     }
-  }, [router]);
+  }, []);
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
@@ -84,7 +84,7 @@ const SideNav = () => {
     });
 
   return (
-    <div className="md:h-full max-md:w-full bg-white max-md:border-2 max-md:fixed max-md:bottom-0 z-20">
+    <div className="md:h-full max-md:w-full bg-white max-md:border-t max-md:fixed max-md:bottom-0 z-20">
       <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden max-md:hidden">
         <Image
           src="/images/heroBG.webp"
@@ -107,7 +107,7 @@ const SideNav = () => {
                     (link) =>
                       link.role === "admin" ||
                       link.label === "Products" ||
-                      link.label === "Account"
+                      link.label === "Me"
                   )
             )}
           </>

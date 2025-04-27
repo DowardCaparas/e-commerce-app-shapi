@@ -2,64 +2,74 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
-import SignOut from "./sign-out";
-import React from "react";
+import { useEffect, useState } from "react";
 
-const NavBar = () => {
+const CartBadge = ({ userId }: { userId: string }) => {
   const [cartQuantity, setCartQuantity] = useState(0);
-  const [link, setLink] = useState("/login");
-  const [label, setLabel] = useState("Sign in");
-  const [isClient, setIsClient] = useState(false);
-  const [role, setRole] = useState("");
 
   useEffect(() => {
-    setIsClient(true); // prevents hydration mismatch on SSR
+    if (!userId) return;
 
-    const userRole = localStorage.getItem("userRole");
-    const userId = localStorage.getItem("userId");
-
-    if (userRole && userId) {
-      if (userRole === "user") {
-        setLink(`/dashboard/cart/${userId}`);
-        setRole("user");
-      } else {
-        setLink(`/dashboard`);
-        setRole("admin");
-      }
-      setLabel("Dashboard");
-    } else {
-      setLink("/login");
-      setLabel("Sign in");
-    }
-  }, []);
-
-  // fetch Cart quantity
-  useEffect(() => {
-    const getCartQuantity = async () => {
+    const fetchCartQuantity = async () => {
       try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) return;
-
-        const response = await fetch(`/api/cart/quantity?userId=${userId}`);
-
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-        const data = await response.json();
+        const res = await fetch(`/api/cart/quantity?userId=${userId}`);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
         setCartQuantity(data.quantity);
       } catch (error) {
         console.error("Failed to fetch cart quantity:", error);
       }
     };
 
-    getCartQuantity();
+    fetchCartQuantity();
+    const interval = setInterval(fetchCartQuantity, 10000); // every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [userId]);
+
+  return (
+    <div className="relative bg-white p-1.5 rounded-full hover:bg-gray-100 active:bg-gray-200">
+      <Link href={`/dashboard/cart/${userId}`} className="font-medium" aria-label="Cart">
+        <Image
+          src="/cart.svg"
+          alt="cart icon"
+          width={25}
+          height={25}
+          className="cursor-pointer"
+        />
+      </Link>
+      {cartQuantity > 0 && (
+        <span
+          className="absolute -top-1 -right-1 bg-red-600 border-2 border-orange-700 
+          p-0.5 rounded-full text-white font-semibold text-xs"
+        >
+          {cartQuantity}
+        </span>
+      )}
+    </div>
+  );
+};
+
+const NavBar = () => {
+  const [label, setLabel] = useState("Sign in");
+  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("userRole");
+    const storedUserId = localStorage.getItem("userId");
+
+    if (storedRole && storedUserId) {
+      setRole(storedRole);
+      setUserId(storedUserId);
+      setLabel("Dashboard");
+    }
   }, []);
 
   return (
     <nav
-      className="bg-gradient-to-b from-[#F6402D] to-[#FE6333] text-white flex justify-between
-       items-center lg:px-12 md:px-4 px-2 py-1"
+      className="bg-gradient-to-b from-[#F6402D] to-[#FE6333] text-white flex 
+    justify-between items-center lg:px-12 md:px-4 px-2 py-1"
     >
       <Link
         href="/"
@@ -75,64 +85,30 @@ const NavBar = () => {
         <span className="ml-2">Shapi</span>
       </Link>
 
-      {isClient && (
-        <div className="flex items-center gap-4">
-          {label === "Dashboard" ? (
-            <Fragment>
-              {role === "user" ? (
-                <Fragment>
-                  <Link
-                    href={link}
-                    className="font-medium bg-white p-1 rounded-full hover:bg-gray-100 active:scale-95"
-                    aria-label={label}
-                  >
-                    <Image
-                      src="/cart.svg"
-                      alt="cart icon"
-                      width={25}
-                      height={25}
-                      className="cursor-pointer"
-                    />
-                  </Link>
-                  {/* cart items quantity */}
-                  {cartQuantity > 0 && (
-                    <div className="absolute top-0 ml-6 mt-3">
-                      <span
-                        className="bg-red-600 border-2 border-white p-1 rounded-full 
-                text-white font-semibold text-xs"
-                      >
-                        {cartQuantity}
-                      </span>
-                    </div>
-                  )}
-                </Fragment>
-              ) : (
-                  <Link
-                    href={link}
-                    className="font-medium bg-white p-1 rounded-full hover:bg-gray-100 active:scale-95"
-                    aria-label={label}
-                  >
-                    <Image
-                      src="/user.svg"
-                      alt="user icon"
-                      width={25}
-                      height={25}
-                      className="cursor-pointer"
-                    />
-                  </Link>
-              )}
-
-              <div>
-                <SignOut />
-              </div>
-            </Fragment>
-          ) : (
-            <Link href={link} className="font-medium" aria-label={label}>
-              {label}
+      <div className="flex items-center gap-4">
+        {label === "Dashboard" ? (
+          <div className="flex items-center gap-4">
+            {role === "user" && userId && <CartBadge userId={userId} />}
+            <Link
+              href="/dashboard"
+              className="font-medium bg-white p-1.5 rounded-full hover:bg-gray-100 active:scale-95"
+              aria-label="Dashboard"
+            >
+              <Image
+                src="/user.svg"
+                alt="user icon"
+                width={25}
+                height={25}
+                className="cursor-pointer"
+              />
             </Link>
-          )}
-        </div>
-      )}
+          </div>
+        ) : (
+          <Link href="/login" className="font-medium" aria-label="Sign in account">
+            Sign in
+          </Link>
+        )}
+      </div>
     </nav>
   );
 };

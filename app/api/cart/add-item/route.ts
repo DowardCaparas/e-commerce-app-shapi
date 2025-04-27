@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       // if exist update the quantity only
       await sql`
         UPDATE cart 
-        SET quantity = quantity + ${quantity}, date = ${date}
+        SET quantity = quantity + ${quantity}
         WHERE userId = ${userId} AND productId = ${productId}
       `;
     } else {

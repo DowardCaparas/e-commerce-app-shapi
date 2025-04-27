@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 const AddToCart = ({
   productId,
@@ -20,7 +19,6 @@ const AddToCart = ({
 }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [showAddingSuccess, setshowAddingSuccess] = useState(false);
-  const route = useRouter();
 
   const handleSubmit = async () => {
     const userId = localStorage.getItem("userId");
@@ -47,7 +45,6 @@ const AddToCart = ({
       });
       setIsAdding(false);
       setshowAddingSuccess(true);
-      route.refresh();
     } catch (error) {
       console.error("Failed to add item to cart:", error);
       setshowAddingSuccess(false);

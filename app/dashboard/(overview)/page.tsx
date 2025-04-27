@@ -8,7 +8,7 @@ const DashboardPage = () => {
   const [search, setSearch] = useState("");
   return (
     <div className="relative">
-      <header className="bg-orange-500 px-2 py-6 w-full">
+      <header className="bg-gradient-to-t from-[#F6402D] to-[#FE6333] px-2 py-6 w-full">
         <div className="relative flex flex-1 flex-shrink-0">
           <label htmlFor="search" className="sr-only">
             Search

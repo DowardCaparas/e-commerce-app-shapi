@@ -14,10 +14,20 @@ const UserCartPage = async (props: {
 }) => {
   const params = await props.params;
   const id = params.id;
-  const cart = await fetchCart(id); // Await the data
+  const cart = await fetchCart(id);
 
-  let totalAmount = 0;
-  let totalDiscount = 0;
+  // ✅ Calculate totals OUTSIDE of the rendering
+  const totalAmount = cart.reduce(
+    (sum, product) => sum + product.price * product.quantity,
+    0
+  );
+
+  const totalDiscount = cart.reduce((sum, product) => {
+    const safeDiscount = parseFloat(Math.abs(product.discount).toFixed(0));
+    const originalPrice = product.price / (1 - safeDiscount / 100);
+    const discountAmount = originalPrice - product.price;
+    return sum + discountAmount * product.quantity;
+  }, 0);
 
   return (
     <Fragment>
@@ -26,23 +36,19 @@ const UserCartPage = async (props: {
         {cart.length > 0 ? (
           <div className="inline-grid space-y-2 w-full">
             {cart.map((product) => {
-              totalAmount += product.price * product.quantity;
-
               const safeDiscount = parseFloat(
                 Math.abs(product.discount).toFixed(0)
               );
               const originalPrice = product.price / (1 - safeDiscount / 100);
               const discountAmount = originalPrice - product.price;
 
-              totalDiscount += discountAmount * product.quantity;
-
               return (
                 <div key={product.id} className="flex flex-col">
-                  <div className="inline-grid space-y-4 bg-white border md:rounded-lg p-3 ">
+                  <div className="inline-grid space-y-4 bg-white border md:rounded-lg p-3">
                     <Link
-                      href={`/product/${product.productId}`}
-                      className="inline-grid space-y-4 hover:bg-gray-100 
-                      active:bg-gray-200 duration-75 transition-colors ease-out"
+                      href={`/product/${product.productid}`}
+                      className="inline-grid space-y-4 hover:bg-gray-100 active:bg-gray-200
+                       duration-75 transition-colors ease-out"
                     >
                       <div className="flex items-center gap-4 w-full">
                         <Image
@@ -78,31 +84,29 @@ const UserCartPage = async (props: {
                     </Link>
                     <hr className="mb-2" />
                     <div className="flex items-center justify-end gap-10">
-                    <EditProductQuantity
+                      <EditProductQuantity
                         qty={product.quantity}
-                        productId={product.productId}
+                        productId={product.productid}
                       />
-                      <DeleteItemFromCart productId={product.productId} />
+                      <DeleteItemFromCart productId={product.productid} />
                     </div>
-                    
-                    
                   </div>
 
-                  <div className="flex justify-between items-center px-2">
+                  <div className="flex justify-between items-center px-2 mt-2">
                     <span>Date</span>
-                    <span className="mt-2 font-medium">
+                    <span className="font-medium">
                       {formatDateToLocal(product.date)}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center px-2">
+                  <div className="flex justify-between items-center px-2 mt-2">
                     <span>Discount</span>
-                    <span className="mt-2 font-medium">
-                      {(discountAmount * product.quantity).toFixed(2)}
+                    <span className="font-medium">
+                      ${(discountAmount * product.quantity).toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center px-2">
+                  <div className="flex justify-between items-center px-2 mt-2">
                     <span>Total of {product.quantity} Item(s)</span>
-                    <span className="mt-2 font-medium">
+                    <span className="font-medium">
                       ${(product.price * product.quantity).toFixed(2)}
                     </span>
                   </div>
@@ -125,11 +129,12 @@ const UserCartPage = async (props: {
             </h3>
           </div>
         )}
-        {/* Order summary */}
+
+        {/* Order Summary */}
         {cart.length > 0 && (
           <div
             className="bg-orange-100 lg:px-5 lg:py-6 p-4 fixed md:bottom-2 
-            left-0 right-0 md:left-75 md:right-11 bottom-16 md:rounded-t-2xl border-t md:shadow-lg"
+            left-0 right-0 md:left-75 md:right-11 bottom-10 md:rounded-t-2xl border-t md:shadow-lg"
           >
             <div className="flex justify-between gap-2 items-center">
               <div className="inline-grid space-y-2 lg:text-xl text-lg">
