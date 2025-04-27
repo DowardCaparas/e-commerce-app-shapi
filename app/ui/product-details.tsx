@@ -8,7 +8,9 @@ import ProductReviews from "./product-reviews";
 import ProductCards from "./product-card";
 
 const ProductDetails = ({
+  id,
   title,
+  thumbnail,
   price,
   discountPercentage,
   rating,
@@ -28,8 +30,6 @@ const ProductDetails = ({
   const originalPrice = price / (1 - safeDiscount / 100);
 
   const discountAmount = originalPrice - price;
-
-  console.log(category);
 
   return (
     <>
@@ -94,7 +94,7 @@ const ProductDetails = ({
                 <span className="text-gray-600 line-through md:text-xl">
                   ${originalPrice.toFixed(2)}
                 </span>
-                <span className="bg-red-100 text-red-500 px-1 rounded-md text-sm font-medium">
+                <span className="bg-red-50 text-red-500 px-1 text-sm font-medium">
                   -{discountPercentage.toFixed(2)}%
                 </span>
               </div>
@@ -128,9 +128,14 @@ const ProductDetails = ({
             />
             <span>{returnPolicy}</span>
           </div>
-          <div className="flex flex-col gap-10 mt-8 max-md:hidden">
-            <span>Quantity:</span>
-            <SetQuantity />
+          <div className="mt-10 max-md:hidden">
+            <SetQuantity
+              productId={id}
+              name={title}
+              price={price}
+              discount={discountPercentage}
+              thumbnail={thumbnail}
+            />
           </div>
         </div>
       </div>
@@ -138,7 +143,7 @@ const ProductDetails = ({
       <ProductReviews reviews={reviews || []} />
 
       {/* related products */}
-      <div className="lg:px-16 md:px-8 px-4 mb-28">
+      <div className="lg:px-16 md:px-8 px-4 md:mb-28 mb-48">
         <h3 className="mb-10 font-semibold text-gray-700 text-2xl max-md:text-xl">
           Related products
         </h3>
@@ -146,9 +151,17 @@ const ProductDetails = ({
       </div>
 
       {/* for mobile devices add to cart */}
-      <div className="flex flex-col gap-10 mt-8 md:hidden px-4 mb-10 items-center">
-        <span>Quantity:</span>
-        <SetQuantity />
+      <div
+        className="fixed bottom-0 bg-gray-200 w-full flex flex-col gap-2 md:hidden
+       items-center border z-20"
+      >
+        <SetQuantity
+          productId={id}
+          name={title}
+          price={price}
+          discount={discountPercentage}
+          thumbnail={thumbnail}
+        />
       </div>
     </>
   );

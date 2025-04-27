@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const links = [
-  { label: "Dashboard", path: "/dashboard", icon: "/gauge.svg", role: "admin" },
+  { label: "Home", path: "/dashboard", icon: "/home.svg", role: "admin" },
   { label: "Cart", path: "/dashboard/cart", icon: "/cart.svg", role: "user" },
   {
     label: "Users",
@@ -19,10 +19,10 @@ const links = [
     label: "Products",
     path: "/dashboard/products",
     icon: "/package.svg",
-    role: "user",
+    role: "admin",
   },
   {
-    label: "Account",
+    label: "Me",
     path: "/dashboard/account",
     icon: "/user.svg",
     role: "user",
@@ -46,7 +46,7 @@ const SideNav = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("userId");
     const storedRole = localStorage.getItem("userRole");
-    console.log(storedToken);
+    
     if (!storedToken) {
       router.push("/login");
     } else {
@@ -64,25 +64,27 @@ const SideNav = () => {
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
-      const linkWithToken = link.label === "Cart" || link.label === "Account";
+      const linkWithToken = link.label === "Cart" || link.label === "Me";
       return (
         <Link
           key={link.label}
           href={linkWithToken ? `${link.path}/${token}` : link.path}
-          className={`flex p-5 gap-3 w-full max-md:justify-center ${
+          className={`flex max-md:flex-col max-md:items-center md:gap-3 md:p-3 py-1 w-full 
+            max-md:justify-center 
+            ${
             pathname === link.path || pathname === `${link.path}/${token}`
-              ? "bg-green-200"
+              ? "bg-orange-200"
               : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
           }`}
         >
-          <Image src={link.icon} alt={link.label} width={20} height={20} />
-          <span className="font-medium max-md:hidden">{link.label}</span>
+          <Image src={link.icon} alt={link.label} width={25} height={25} />
+          <span className="font-medium max-md:text-xs">{link.label}</span>
         </Link>
       );
     });
 
   return (
-    <div className="md:h-full max-md:w-full bg-white max-md:border-2 max-md:fixed max-md:bottom-0 z-10">
+    <div className="md:h-full max-md:w-full bg-white max-md:border-2 max-md:fixed max-md:bottom-0 z-20">
       <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden max-md:hidden">
         <Image
           src="/images/heroBG.webp"
@@ -98,7 +100,9 @@ const SideNav = () => {
             {/* Filter the side nav links based on the user type */}
             {renderLinks(
               role === "user"
-                ? links.filter((link) => link.role === "user" || link.label === "Dashboard" )
+                ? links.filter(
+                    (link) => link.role === "user" || link.label === "Home"
+                  )
                 : links.filter(
                     (link) =>
                       link.role === "admin" ||

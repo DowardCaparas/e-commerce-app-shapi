@@ -38,6 +38,7 @@ const DeleteItemFromCart = ({ productId }: { productId: number }) => {
     } catch (error) {
       console.error("Failed to delete item from cart:", error);
       setShowConfirm(false); // close modal
+      setIsDeleting(false);
     }
   };
 

@@ -1,7 +1,7 @@
 export interface ProductDataTypes {
   id: number;
   title: string;
-  thumbnail?: string;
+  thumbnail: string;
   price: number;
   discountPercentage: number;
   rating?: number;
@@ -21,24 +21,6 @@ export interface ProductDataTypes {
   returnPolicy?: string;
 }
 
-export interface ProductsOnCartTypes {
-  id?: number;
-  products: {
-    id: number;
-    title: string;
-    price: number;
-    quantity: number;
-    total: number;
-    discountPercentage: number;
-    discountedTotal: number;
-    thumbnail: string;
-  }[];
-  total: number;
-  discountedTotal: number;
-  totalProducts: number;
-  totalQuantity: number;
-}
-
 // Represents the JWT token for auth
 export type AuthTokens = {
   accessToken: string;
@@ -55,10 +37,10 @@ export type UserAccount = {
   role?: string;
 };
 
-export interface Cart {
-  id: string;
-  userid: string;
-  productid: number;
+export interface CartItem {
+  id?: string;
+  userId?: string;
+  productId: number;
   name: string;
   price: number;
   discount: number;

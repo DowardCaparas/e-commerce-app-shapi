@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { Cart, UserAccount } from "./definitions";
+import { CartItem, UserAccount } from "./definitions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const ITEMS_PER_PAGE = 9;
@@ -122,11 +122,11 @@ export const fetchAccountsPages = async () => {
 // fetch all cart items
 export const fetchCart = async (id: string) => {
   try {
-    const data = await sql<Cart>`
+    const data = await sql<CartItem>`
       SELECT *
       FROM cart
       WHERE userid = ${id}
-      ORDER BY date
+      ORDER BY date DESC
     `;
     return data.rows;
   } catch (error) {

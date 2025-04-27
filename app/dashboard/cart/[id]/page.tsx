@@ -40,7 +40,7 @@ const UserCartPage = async (props: {
                 <div key={product.id} className="flex flex-col">
                   <div className="inline-grid space-y-4 bg-white border md:rounded-lg p-3 ">
                     <Link
-                      href={`/product/${product.productid}`}
+                      href={`/product/${product.productId}`}
                       className="inline-grid space-y-4 hover:bg-gray-100 
                       active:bg-gray-200 duration-75 transition-colors ease-out"
                     >
@@ -80,9 +80,9 @@ const UserCartPage = async (props: {
                     <div className="flex items-center justify-end gap-10">
                     <EditProductQuantity
                         qty={product.quantity}
-                        productId={product.productid}
+                        productId={product.productId}
                       />
-                      <DeleteItemFromCart productId={product.productid} />
+                      <DeleteItemFromCart productId={product.productId} />
                     </div>
                     
                     

@@ -24,7 +24,7 @@ const ProductCategories = () => {
   }, []);
 
   return (
-    <div className="bg-white p-5">
+    <div>
       <div className="flex flex-col gap-2 mb-5">
           <label htmlFor="category" className="text-gray-500 font-medium">
             Categories

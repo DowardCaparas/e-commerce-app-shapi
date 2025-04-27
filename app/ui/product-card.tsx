@@ -50,34 +50,29 @@ const ProductCards = ({
   }
 
   return (
-    <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4">
+    <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
       {products.map((product: ProductDataTypes) => (
         <Link
           key={product.id}
           href={`/product/${product.id}`}
-          className="bg-white shadow-sm hover:shadow-md transition-transform duration-200 hover:scale-[1.01]"
+          className="bg-white shadow-sm hover:shadow-md transition duration-100 ease-in
+          max-md:rounded-sm hover:ring ring-orange-500 overflow-hidden relative"
           aria-label={`View details for ${product.title}`}
         >
+         <div className="absolute -mt-1 right-0 z-10">
+         <span className="bg-red-50 text-red-500 px-1 text-sm font-medium">
+            -{product.discountPercentage.toFixed(2)}%
+          </span>
+         </div>
           <Image
             src={product.thumbnail ? product.thumbnail : ""}
             alt={product.title}
             width={300}
             height={300}
-            className="w-full bg-linear-to-l from-white to-gray-200"
+            className="w-full bg-white max-md:rounded-t-sm hover:scale-105 transition duration-100 ease-in"
           />
-          <div className="p-2 flex flex-col gap-3">
-            <div className="inline-grid">
-              <span className="font-medium text-md truncate">
-                {product.title}
-              </span>
-              <span className="bg-orange-600 font-semibold text-white py-1 px-2 text-sm w-30">
-                $
-                {(product.price * (product.discountPercentage / 100)).toFixed(
-                  2
-                )}{" "}
-                off
-              </span>
-            </div>
+          <div className="p-2 flex flex-col gap-2">
+            <span className="truncate">{product.title}</span>
 
             <span className="text-orange-600 font-medium">
               $<span className="text-xl">{product.price}</span>
@@ -86,7 +81,6 @@ const ProductCards = ({
               <Image src="/star-filled.svg" alt="star" width={18} height={18} />
               <span>{product.rating}</span>
             </div>
-            <span className="text-gray-600">{product.brand}</span>
           </div>
         </Link>
       ))}
