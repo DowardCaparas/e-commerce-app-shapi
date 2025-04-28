@@ -6,16 +6,13 @@ import { useEffect, useState } from "react";
 
 const NavBar = () => {
   const [label, setLabel] = useState("Sign in");
-  const [role, setRole] = useState("");
-  const [userId, setUserId] = useState("");
+
 
   useEffect(() => {
     const storedRole = localStorage.getItem("userRole");
     const storedUserId = localStorage.getItem("userId");
 
     if (storedRole && storedUserId) {
-      setRole(storedRole);
-      setUserId(storedUserId);
       setLabel("Dashboard");
     }
   }, []);
@@ -39,31 +36,29 @@ const NavBar = () => {
         <span className="ml-1">Shapi</span>
       </Link>
 
-      <div className="flex items-center gap-4">
-        {label === "Dashboard" ? (
-          <div className="flex items-center gap-4">
-            {role === "user" && userId }
-            <Link
-              href="/dashboard"
-              className="font-medium bg-white p-1.5 rounded-full hover:bg-gray-100 active:scale-95"
-              aria-label="Dashboard"
-            >
-              <Image
-                src="/user.svg"
-                alt="user icon"
-                width={25}
-                height={25}
-                className="cursor-pointer"
-              />
-            </Link>
-          </div>
-        ) : (
-          <Link href="/login" className="font-medium" aria-label="Sign in account">
-            Sign in
-          </Link>
-        )}
-      </div>
-      
+      {label === "Dashboard" ? (
+        <Link
+          href="/dashboard"
+          className="font-medium bg-white p-1.5 rounded-full hover:bg-gray-100 active:scale-95"
+          aria-label="Dashboard"
+        >
+          <Image
+            src="/user.svg"
+            alt="user icon"
+            width={25}
+            height={25}
+            className="cursor-pointer"
+          />
+        </Link>
+      ) : (
+        <Link
+          href="/login"
+          className="font-medium"
+          aria-label="Sign in account"
+        >
+          Sign in
+        </Link>
+      )}
     </nav>
   );
 };
