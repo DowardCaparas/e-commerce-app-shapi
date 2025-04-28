@@ -10,7 +10,7 @@ const AccountSettingsPage = async (props: {
   const params = await props.params;
   const id = params.id;
   const account = await fetchAccountById(id);
-  return <AccountProfile account={account}/>;
+  return <AccountProfile account={account} /> ;
 };
 
 export default AccountSettingsPage;

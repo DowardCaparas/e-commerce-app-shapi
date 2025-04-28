@@ -16,20 +16,19 @@ const SignOut = () => {
     setTimeout(() => {
       window.location.reload();
     }, 20); // slight delay to allow navigation
-    
   };
 
   return (
     <Fragment>
       {/* Sign out button in bottom right */}
       <button
-          onClick={() => setShowConfirm(true)}
-          className="bg-white text-orange-600 px-4 py-1 rounded-md font-medium 
-                hover:bg-orange-100 active:scale-95 cursor-pointer"
-          aria-label="Signing out the account"
-        >
-          Sign out
-        </button>
+        onClick={() => setShowConfirm(true)}
+        className="bg-red-500 hover:bg-red-600 active:bg-red-700 px-4 py-2 text-white
+                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
+        aria-label="Signing out the account"
+      >
+        Sign out
+      </button>
 
       {/* Confirmation Modal */}
       {showConfirm && (

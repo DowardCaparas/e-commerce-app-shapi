@@ -1,11 +1,15 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const Hero = () => {
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   return (
     <section
       className="flex max-md:flex-col-reverse justify-between max-md:items-center 
-    gap-10 mt-20 mb-14"
+    gap-10 mt-40 mb-14"
     >
       <div className="md:w-[50%]">
         <h1
@@ -21,13 +25,24 @@ const Hero = () => {
           shop everything in one place.
         </p>
       </div>
-      <Image
-        src="/images/heroBG.webp"
-        alt="Big Cart image illustration"
-        width={500}
-        height={610}
-        className="md:w-[50%] -mt-10"
-      />
+
+      <div className="md:w-[50%] w-full -mt-10 relative" style={{ height: "610px" }}>
+        {/* Skeleton loader (shows only while image is loading) */}
+        {isImageLoading && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-md" />
+        )}
+        
+        <Image
+          src="/images/heroBG.webp"
+          alt="Big Cart image illustration"
+          width={500}
+          height={610}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isImageLoading ? "opacity-0" : "opacity-100"
+          }`}
+          onLoadingComplete={() => setIsImageLoading(false)}
+        />
+      </div>
     </section>
   );
 };

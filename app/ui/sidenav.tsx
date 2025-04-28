@@ -16,12 +16,6 @@ const links = [
     role: "admin",
   },
   {
-    label: "Products",
-    path: "/dashboard/products",
-    icon: "/package.svg",
-    role: "admin",
-  },
-  {
     label: "Me",
     path: "/dashboard/account",
     icon: "/user.svg",
@@ -60,7 +54,7 @@ const SideNav = () => {
 
       return () => clearTimeout(timeout); // cleanup
     }
-  }, []);
+  }, [router]);
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
@@ -106,7 +100,6 @@ const SideNav = () => {
                 : links.filter(
                     (link) =>
                       link.role === "admin" ||
-                      link.label === "Products" ||
                       link.label === "Me"
                   )
             )}

@@ -41,8 +41,27 @@ const ProductCards = ({
     fetchData();
   }, [category, search]); // react to both
 
+
+  // render product card skeleton when loading or fetching is not done
   if (loading) {
-    return <p className="text-center col-span-full">Loading products...</p>;
+    return (
+      <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
+        {Array.from({ length: 30 }).map((_, index) => (
+          <div
+            key={index}
+            className="bg-white animate-pulse rounded-md p-3 flex flex-col gap-3 shadow-sm"
+          >
+            <div className="bg-gray-200 h-40 w-full rounded" />
+            <div className="bg-gray-200 h-4 w-3/4 rounded" />
+            <div className="bg-gray-200 h-4 w-1/2 rounded" />
+            <div className="flex gap-2">
+              <div className="bg-gray-200 h-4 w-4 rounded-full" />
+              <div className="bg-gray-200 h-4 w-8 rounded" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (products.length === 0) {
@@ -50,7 +69,7 @@ const ProductCards = ({
   }
 
   return (
-    <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
+    <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
       {products.map((product: ProductDataTypes) => (
         <Link
           key={product.id}
@@ -59,11 +78,11 @@ const ProductCards = ({
           max-md:rounded-sm hover:ring ring-orange-500 overflow-hidden relative"
           aria-label={`View details for ${product.title}`}
         >
-         <div className="absolute -mt-1 right-0 z-10">
-         <span className="bg-red-50 text-red-500 px-1 text-sm font-medium">
-            -{product.discountPercentage.toFixed(2)}%
-          </span>
-         </div>
+          <div className="absolute -mt-1 right-0 z-10">
+            <span className="bg-red-50 text-red-500 px-1 text-sm font-medium">
+              -{product.discountPercentage.toFixed(2)}%
+            </span>
+          </div>
           <Image
             src={product.thumbnail ? product.thumbnail : ""}
             alt={product.title}

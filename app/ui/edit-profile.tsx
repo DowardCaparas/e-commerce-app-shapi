@@ -5,6 +5,7 @@ import { UserAccount } from "../lib/definitions";
 import Image from "next/image";
 import { AccountFormState, updateAccount } from "../lib/actions";
 import React from "react";
+import SignOut from "./sign-out";
 
 const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
   const [formData, setFormData] = useState({
@@ -15,10 +16,7 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
   });
   const initialState: AccountFormState = { message: null, errors: {} };
   const updateAccountById = updateAccount.bind(null, id);
-  const [state, formAction] = useActionState(
-    updateAccountById,
-    initialState
-  );
+  const [state, formAction] = useActionState(updateAccountById, initialState);
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -54,7 +52,7 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
   };
 
   return (
-    <>
+    <div className="mb-28 mt-10">
       {/* edit button */}
       <div className="flex items-center gap-4">
         <button
@@ -62,7 +60,7 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
           className={`bg-white p-2 rounded-lg flex items-center gap-4
                   active:scale-100 ${
                     isEditing
-                      ? "opacity-70 cursor-not-allowed"
+                      ? "opacity-70 cursor-not-allowed disabled:bg-gray-300"
                       : "hover:scale-105 cursor-pointer"
                   }`}
           disabled={isEditing}
@@ -123,30 +121,35 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
             </div>
           </div>
         ))}
-
-        {/* Show only if the user choose to edit their information */}
-        {isEditing && (
-          <div className="flex justify-center gap-4 w-full mt-10">
-            <button
-              type="submit"
-              onClick={() => {
-                setIsEditing(false);
-                setShowSuccessMessage(false);
-              }}
-              className="bg-gray-200 hover:bg-gray-300 active:bg-gray-400 px-4 py-2
-                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-4 py-2
-                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
-            >
-              {isPending ? "Saving..." : "Save changes"}
-            </button>
-          </div>
-        )}
       </form>
+
+      {/* Show buttons only if the user choose to edit their information */}
+      <div className="flex justify-between gap-4 w-full mt-10">
+        <SignOut />
+
+          {isEditing && (
+            <div className="flex items-center gap-4">
+              <button
+                type="submit"
+                onClick={() => {
+                  setIsEditing(false);
+                  setShowSuccessMessage(false);
+                }}
+                className="bg-gray-200 hover:bg-gray-300 active:bg-gray-400 px-4 py-2
+                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-4 py-2
+                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
+              >
+                {isPending ? "Saving..." : "Save changes"}
+              </button>
+            </div>
+          )}
+
+      </div>
 
       {/* show when successfully updated */}
       {showSuccessMessage && (
@@ -172,7 +175,7 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

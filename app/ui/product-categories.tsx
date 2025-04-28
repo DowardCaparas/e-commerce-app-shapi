@@ -24,9 +24,9 @@ const ProductCategories = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <div className="flex flex-col gap-2 mb-5">
-          <label htmlFor="category" className="text-gray-500 font-medium">
+          <label htmlFor="category" className="text-gray-700 font-medium text-xl">
             Categories
           </label>
           <Select
@@ -54,7 +54,7 @@ const ProductCategories = () => {
           </Select>
         </div>
       <ProductCards category={category}/>
-    </div>
+    </>
   );
 };
 

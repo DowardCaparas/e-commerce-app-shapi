@@ -11,8 +11,8 @@ interface AccountSettingsClientProps {
 
 const AccountProfile = ({account}: AccountSettingsClientProps) => {
   return (
-    <div className="bg-gray-100 p-2 md:p-5 border rounded-lg mb-28">
-      <div className="flex items-center gap-4">
+    <div className="bg-gray-100 p-2 md:p-5 mt-16">
+      <div className="flex max-md:flex-col max-md:text-center items-center gap-4">
         <Image
           src="/user.svg"
           alt="user icon"
