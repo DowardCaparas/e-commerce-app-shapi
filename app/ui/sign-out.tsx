@@ -7,15 +7,21 @@ const SignOut = () => {
   const router = useRouter();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     setShowConfirm(false);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
-    router.push("/login");
-    // Refresh the page to reload components using localStorage
-    setTimeout(() => {
-      window.location.reload();
-    }, 20); // slight delay to allow navigation
+
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+      });
+      router.push("/login");
+      // Refresh the page to reload components using localStorage
+      setTimeout(() => {
+        window.location.reload();
+      }, 20); // slight delay to allow navigation
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (

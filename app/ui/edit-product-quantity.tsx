@@ -11,13 +11,23 @@ const EditProductQuantity = ({
   productId: number;
 }) => {
   const [quantity, setQuantity] = useState(qty);
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState("");
   const router = useRouter();
   
   useEffect(() => {
-    const userRole = localStorage.getItem("userRole");
-    if (!userRole) return;
-    setRole(userRole);
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
+
+        if (data.role) {
+          setRole(data.role);
+        }
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
   }, []);
 
   // Local update for quantity
@@ -26,24 +36,18 @@ const EditProductQuantity = ({
   };
 
   const updateQuantityOnServer = async (newQuantity: number) => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
-
     try {
       await fetch("/api/cart/update-quantity", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, productId, quantity: newQuantity }),
+        body: JSON.stringify({ productId, quantity: newQuantity }),
       });
     } catch (error) {
       console.error("Failed to update quantity:", error);
-    } finally {
-    }
-
+    } 
     router.refresh();
-    
   };
 
   const handleDecrement = async () => {

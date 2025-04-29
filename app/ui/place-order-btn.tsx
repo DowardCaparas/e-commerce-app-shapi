@@ -3,15 +3,24 @@
 import React, { useEffect, useState } from "react";
 
 const PlaceOrderButton = () => {
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
-    const userRole = localStorage.getItem("userRole");
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
 
-    if (!userRole) return;
-
-    setRole(userRole);
+        if (data.role) {
+          setRole(data.role);
+        }
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
   }, []);
+
   return (
     <>
       {role === "user" && (

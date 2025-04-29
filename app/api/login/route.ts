@@ -22,13 +22,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Invalid username or password" }, { status: 401 });
     }
 
-    return NextResponse.json(
-      { message: "Login successful", userId: user.id, role: user.role },
+    const response = NextResponse.json(
+      { message: "Login successful" },
       { status: 200 }
     );
+
+    response.cookies.set({
+      name: "session",
+      value: JSON.stringify({userId: user.id, userRole: user.role}),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7 //7days
+    });
+
+    return response;
     
   } catch (error) {
-    console.error("Login error:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json({ message: "Server error", error }, { status: 500 });
   }
 }

@@ -32,9 +32,22 @@ const UserCartPage = async (props: {
   return (
     <Fragment>
       <div className="md:p-6 mb-36">
-        <h1 className="text-2xl font-semibold mb-4">Cart</h1>
+        <div className="pl-4 pb-4 pt-6 bg-orange-600 fixed top-0 right-0 left-0 
+        flex items-center gap-4">
+          <Link href="/dashboard" >
+          <Image
+              src="/left-arrow.svg"
+              alt="empty cart icon"
+              width={35}
+              height={35}
+              className="bg-orange-700 hover:bg-orange-800 active:bg-orange-900
+              rounded-full p-1"
+            />
+          </Link>
+          <h3 className="text-white font-medium text-xl">Shopping Cart</h3>
+        </div>
         {cart.length > 0 ? (
-          <div className="inline-grid space-y-2 w-full">
+          <div className="inline-grid space-y-2 w-full mt-20">
             {cart.map((product) => {
               const safeDiscount = parseFloat(
                 Math.abs(product.discount).toFixed(0)

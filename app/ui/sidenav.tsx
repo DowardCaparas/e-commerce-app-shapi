@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 
 const links = [
   { label: "Home", path: "/dashboard", icon: "/home.svg", role: "admin" },
-  { label: "Cart", path: "/dashboard/cart", icon: "/cart.svg", role: "user" },
   {
     label: "Users",
     path: "/dashboard/users",
@@ -31,45 +30,67 @@ type LinksTypes = {
 };
 
 const SideNav = () => {
-  const [role, setRole] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
   const [showLinks, setShowLinks] = useState(false); // new state for delay
   const pathname = usePathname();
   const router = useRouter();
 
+  // Check if already signed in
   useEffect(() => {
-    const storedToken = localStorage.getItem("userId");
-    const storedRole = localStorage.getItem("userRole");
-    
-    if (!storedToken) {
-      router.push("/login");
-    } else {
-      setToken(storedToken);
-      setRole(storedRole);
+    const checkLogin = async () => {
+      try {
+        const res = await fetch("/api/check-session");
+        const data = await res.json();
 
-      // delay link rendering
-      const timeout = setTimeout(() => {
-        setShowLinks(true);
-      }, 20); // 300ms delay, tweak as needed
-
-      return () => clearTimeout(timeout); // cleanup
-    }
+        if (!data.isLoggedIn) {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error("Failed to check session:", error);
+      }
+    };
+    checkLogin();
   }, [router]);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
+
+        if (data.role) {
+          setRole(data.role);
+          setUserId(data.userId);
+
+          // delay link rendering
+          const timeout = setTimeout(() => {
+            setShowLinks(true);
+          }, 20); // 300ms delay, tweak as needed
+
+          return () => clearTimeout(timeout); // cleanup
+        }
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
+  }, []);
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
-      const linkWithToken = link.label === "Cart" || link.label === "Me";
+      const linkWithUserId = link.label === "Cart" || link.label === "Me";
       return (
         <Link
           key={link.label}
-          href={linkWithToken ? `${link.path}/${token}` : link.path}
+          href={linkWithUserId ? `${link.path}/${userId}` : link.path}
           className={`flex max-md:flex-col max-md:items-center md:gap-3 md:p-3 py-1 w-full 
             max-md:justify-center 
             ${
-            pathname === link.path || pathname === `${link.path}/${token}`
-              ? "bg-orange-200"
-              : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
-          }`}
+              pathname === link.path || pathname === `${link.path}/${userId}`
+                ? "bg-orange-200"
+                : "hover:bg-gray-100 active:bg-gray-200 transition-transform duration-100 ease-in"
+            }`}
         >
           <Image src={link.icon} alt={link.label} width={25} height={25} />
           <span className="font-medium max-md:text-xs">{link.label}</span>
@@ -98,9 +119,7 @@ const SideNav = () => {
                     (link) => link.role === "user" || link.label === "Home"
                   )
                 : links.filter(
-                    (link) =>
-                      link.role === "admin" ||
-                      link.label === "Me"
+                    (link) => link.role === "admin" || link.label === "Me"
                   )
             )}
           </>

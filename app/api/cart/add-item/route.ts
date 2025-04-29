@@ -1,17 +1,26 @@
 import { sql } from "@vercel/postgres";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  const {
-    userId,
-    productId,
-    name,
-    price,
-    discount,
-    thumbnail,
-    quantity,
-    date,
-  } = await req.json();
+export async function POST(req: NextRequest) {
+  const session = req.cookies.get("session");
+
+  if (!session) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
+  let userId: string;
+  try {
+    const sessionData = JSON.parse(session.value);
+    userId = sessionData.userId;
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Invalid session data", error },
+      { status: 400 }
+    );
+  }
+
+  const { productId, name, price, discount, thumbnail, quantity, date } =
+    await req.json();
 
   try {
     // check if the product is already exist in the cart

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const AddToCart = ({
@@ -18,14 +18,18 @@ const AddToCart = ({
   quantity: number;
 }) => {
   const [isAdding, setIsAdding] = useState(false);
-  const [showAddingSuccess, setshowAddingSuccess] = useState(false);
+  const [showAddingSuccess, setShowAddingSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (showAddingSuccess) {
+      const timeout = setTimeout(() => setShowAddingSuccess(false), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [showAddingSuccess]);
 
   const handleSubmit = async () => {
-    const userId = localStorage.getItem("userId");
     const date = new Date().toISOString().split("T")[0];
-
-    if (!userId) return;
-
     setIsAdding(true);
 
     try {
@@ -33,7 +37,6 @@ const AddToCart = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
           productId,
           name,
           price,
@@ -44,15 +47,21 @@ const AddToCart = ({
         }),
       });
       setIsAdding(false);
-      setshowAddingSuccess(true);
+      setError("");
+      setShowAddingSuccess(true);
     } catch (error) {
       console.error("Failed to add item to cart:", error);
-      setshowAddingSuccess(false);
+      if (quantity <= 0) {
+        setError("Quantity must be greater than 0");
+        return;
+      }
     }
   };
 
   return (
     <>
+      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+
       <div className="p-2 w-full bg-white">
         <button
           onClick={handleSubmit}
@@ -77,13 +86,6 @@ const AddToCart = ({
             <span className="mb-4 text-center text-black text-lg font-semibold">
               Item added to cart
             </span>
-            <button
-              onClick={() => setshowAddingSuccess(false)}
-              className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-4 py-2
-                            rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

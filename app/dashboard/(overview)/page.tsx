@@ -2,6 +2,7 @@
 
 import CartBadge from "@/app/ui/cart-badge";
 import ProductCards from "@/app/ui/product-card";
+import ProductCategories from "@/app/ui/product-categories";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -11,20 +12,28 @@ const DashboardPage = () => {
   const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    const storedUserRole = localStorage.getItem("userRole");
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
 
-    if (!storedUserId) return;
+        if (data.role) {
+          setRole(data.role);
+        }
 
-    setUserId(storedUserId);
-    setRole(storedUserRole);
+        setUserId(data.userId);
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
   }, []);
 
   return (
     <div className="relative">
       <header
-        className="bg-gradient-to-t from-[#F6402D] to-[#FE6333] px-2 py-6 w-full
-      flex justify-between items-center gap-10"
+        className="bg-gradient-to-t from-[#F6402D] to-[#FE6333] px-4 py-6 w-full
+      flex justify-evenly items-center gap-4"
       >
         <div className="relative flex flex-1 flex-shrink-0">
           <label htmlFor="search" className="sr-only">
@@ -47,8 +56,10 @@ const DashboardPage = () => {
         </div>
         {role === "user" && <CartBadge userId={userId ? userId : ""} />}
       </header>
-      <div className="bg-gray-200 p-2 mt-5 mb-28">
-        <ProductCards search={search} />
+      {/* <ProductCategories /> */}
+      <div className="p-4 mt-2 mb-28">
+        {search ? <ProductCards search={search}/> : <ProductCategories />}
+        
       </div>
     </div>
   );

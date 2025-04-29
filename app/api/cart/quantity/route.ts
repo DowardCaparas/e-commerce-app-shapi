@@ -2,10 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres"; // update if your db helper is elsewhere
 
 export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get("userId");
+  const session = req.cookies.get("session");
 
-  if (!userId) {
-    return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+  if (!session) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
+  let userId: string;
+  try {
+    const sessionData = JSON.parse(session.value);
+    userId = sessionData.userId;
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Invalid session data", error },
+      { status: 400 }
+    );
   }
 
   try {

@@ -35,7 +35,7 @@ const Home = () => {
       </div>
       <footer className="py-8 border-t-4 border-orange-600 lg:px-20 md:px-12 px-4 bg-[#FBFBFB]">
         <div className="border-t border-gray-300 pt-8">
-          <span className="text-sm text-gray-700 ">
+          <span className="text-sm text-gray-800 ">
             &copy; 2025 Dounhuward Caparas. All Rights Reserved.
           </span>
         </div>

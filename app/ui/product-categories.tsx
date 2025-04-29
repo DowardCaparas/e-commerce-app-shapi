@@ -26,7 +26,7 @@ const ProductCategories = () => {
   return (
     <>
       <div className="flex flex-col gap-2 mb-5">
-          <label htmlFor="category" className="text-gray-700 font-medium text-xl">
+          <label htmlFor="category" className="text-gray-700 font-medium text-lg">
             Categories
           </label>
           <Select
@@ -35,7 +35,7 @@ const ProductCategories = () => {
           >
             <SelectTrigger
               id="category"
-              className="w-[200px] bg-gray-100 text-sm hover:bg-gray-200 active:bg-gray-100
+              className="w-[200px] bg-white text-sm hover:bg-orange-50 active:bg-gray-100
                rounded-md border border-gray-300 cursor-pointer"
             >
               <SelectValue placeholder="Choose category" />

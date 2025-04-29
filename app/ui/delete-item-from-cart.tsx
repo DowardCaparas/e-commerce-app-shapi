@@ -8,37 +8,39 @@ const DeleteItemFromCart = ({ productId }: { productId: number }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
-    const userRole = localStorage.getItem("userRole");
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
 
-    if (!userRole) return;
-
-    setRole(userRole);
+        if (data.role) {
+          setRole(data.role);
+        }
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
   }, []);
 
   const handleDelete = async () => {
-    const userId = localStorage.getItem("userId");
-
-    if (!userId) return;
     setIsDeleting(true);
     try {
       await fetch("/api/cart/delete-item", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          productId,
-        }),
+        body: JSON.stringify({ productId }), // removed userId
       });
-      setIsDeleting(false);
-      setShowConfirm(false); // close modal
     } catch (error) {
       console.error("Failed to delete item from cart:", error);
+    } finally {
+      setIsDeleting(false);
       setShowConfirm(false); // close modal
+      router.refresh(); // refresh cart page
     }
-    router.refresh(); // Refresh the cart page after deletion
   };
 
   return (
