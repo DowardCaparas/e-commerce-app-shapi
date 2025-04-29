@@ -2,36 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import CartQuantity from "./cart-quantity";
 
-const CartBadge = ({ userId }: { userId: string }) => {
-  const [cartQuantity, setCartQuantity] = useState(0);
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const fetchCartQuantity = async () => {
-      try {
-        const res = await fetch(`/api/cart/quantity?userId=${userId}`);
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
-        const data = await res.json();
-        setCartQuantity(data.quantity);
-      } catch (error) {
-        console.error("Failed to fetch cart quantity:", error);
-      }
-    };
-
-    fetchCartQuantity();
-    const interval = setInterval(fetchCartQuantity, 10000); // every 10 seconds
-
-    return () => clearInterval(interval);
-  }, [userId]);
-
+const CartBadge = ({userId}: {userId: string}) => {
   return (
-    <div className="relative bg-white p-1.5 rounded-full hover:bg-gray-100 active:bg-gray-200">
+    <div className="relative">
       <Link
         href={`/dashboard/cart/${userId}`}
-        className="font-medium"
         aria-label="Cart"
       >
         <Image
@@ -39,17 +17,15 @@ const CartBadge = ({ userId }: { userId: string }) => {
           alt="cart icon"
           width={25}
           height={25}
-          className="cursor-pointer"
+          className="cursor-pointer hover:scale-95"
         />
       </Link>
-      {cartQuantity > 0 && (
         <span
-          className="absolute -top-1 -right-1 bg-red-600 border-2 border-orange-700 
-          p-0.5 rounded-full text-white font-semibold text-xs"
+          className="absolute -top-2 -right-0 bg-red-600 border-2 border-white 
+         rounded-full text-white font-semibold text-xs p-0.5"
         >
-          {cartQuantity}
+          <CartQuantity />
         </span>
-      )}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { fetchCart } from "@/app/lib/data";
 import { formatDateToLocal } from "@/app/lib/utils";
+import CheckOutButton from "@/app/ui/check-out-btn";
 import DeleteItemFromCart from "@/app/ui/delete-item-from-cart";
 import EditProductQuantity from "@/app/ui/edit-product-quantity";
-import PlaceOrderButton from "@/app/ui/place-order-btn";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment } from "react";
@@ -31,11 +31,13 @@ const UserCartPage = async (props: {
 
   return (
     <Fragment>
-      <div className="md:p-6 mb-36">
-        <div className="pl-4 pb-4 pt-6 bg-orange-600 fixed top-0 right-0 left-0 
-        flex items-center gap-4">
-          <Link href="/dashboard" >
-          <Image
+      <div className="md:p-4 grid max-md:mb-12 lg:grid-cols-2 grid-cols-1 gap-2">
+        <div
+          className="p-4 bg-gradient-to-b from-[#F6402D] to-[#FE6333] 
+        fixed top-0 right-0 left-0 md:left-64 flex items-center gap-4"
+        >
+          <Link href="/dashboard">
+            <Image
               src="/left-arrow.svg"
               alt="empty cart icon"
               width={35}
@@ -47,7 +49,7 @@ const UserCartPage = async (props: {
           <h3 className="text-white font-medium text-xl">Shopping Cart</h3>
         </div>
         {cart.length > 0 ? (
-          <div className="inline-grid space-y-2 w-full mt-20">
+          <div className="inline-grid space-y-2 w-full my-16">
             {cart.map((product) => {
               const safeDiscount = parseFloat(
                 Math.abs(product.discount).toFixed(0)
@@ -96,7 +98,7 @@ const UserCartPage = async (props: {
                       </div>
                     </Link>
                     <hr className="mb-2" />
-                    <div className="flex items-center justify-end gap-10">
+                    <div className="flex items-center justify-end gap-6 h-10">
                       <EditProductQuantity
                         qty={product.quantity}
                         productId={product.productid}
@@ -130,6 +132,7 @@ const UserCartPage = async (props: {
             })}
           </div>
         ) : (
+          // display ui of cart is empty
           <div className="py-24 bg-gray-100 border rounded-lg flex flex-col gap-8 items-center">
             <Image
               src="/images/emptyCart.webp"
@@ -143,31 +146,31 @@ const UserCartPage = async (props: {
           </div>
         )}
 
-        {/* Order Summary */}
-        {cart.length > 0 && (
-          <div
-            className="bg-orange-100 lg:px-5 lg:py-6 p-4 fixed md:bottom-2 
-            left-0 right-0 md:left-75 md:right-11 bottom-10 md:rounded-t-2xl border-t md:shadow-lg"
-          >
-            <div className="flex justify-between gap-2 items-center">
-              <div className="inline-grid space-y-2 lg:text-xl text-lg">
+        {/* Order Summary for large screens*/}
+        <div>
+          {cart.length > 0 && (
+            <div className="bg-white md:p-4 p-2 border md:rounded-lg sticky lg:top-20
+            flex lg:flex-col gap-4 max-lg:fixed max-md:bottom-12 max-lg:right-0 max-lg:left-0
+            md:left-64 md:bottom-0 max-lg:justify-between max-md:items-center">
+              <div className="inline-grid lg:text-xl text-lg">
                 <span>
-                  Total:
+                  Total
                   <span className="font-bold text-orange-600 ml-2">
                     ${totalAmount.toFixed(2)}
                   </span>
                 </span>
                 <span>
-                  Save:
+                  Saved
                   <span className="font-bold text-orange-600 ml-2">
                     ${totalDiscount.toFixed(2)}
                   </span>
                 </span>
               </div>
-              <PlaceOrderButton />
+              <CheckOutButton />
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
       </div>
     </Fragment>
   );

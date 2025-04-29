@@ -67,19 +67,22 @@ const EditProductQuantity = ({
   return (
     <>
       {role === "user" && (
-        <div className="flex items-center gap-2">
-          <span>Qty:</span>
+        
+        <div className="flex items-center gap-2 border rounded-md">
+          
           <button
             onClick={handleDecrement}
-            className="cursor-pointer px-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-sm shadow-sm font-medium text-lg disabled:opacity-50"
+            className="cursor-pointer py-1 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 
+        rounded-l-md shadow-sm text-xl font-semibold"
             aria-label="decrement the item quantity"
           >
             -
           </button>
-          <span className="font-medium">{quantity}</span>
+          <span className="font-medium mx-4">{quantity}</span>
           <button
             onClick={handleIncrement}
-            className="cursor-pointer px-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-sm shadow-sm font-medium text-lg disabled:opacity-50"
+            className="cursor-pointer py-1 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 
+        rounded-r-md shadow-sm font-semibold text-xl"
             aria-label="increment the item quantity"
           >
             +

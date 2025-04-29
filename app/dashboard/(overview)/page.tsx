@@ -8,8 +8,8 @@ import React, { useEffect, useState } from "react";
 
 const DashboardPage = () => {
   const [search, setSearch] = useState("");
-  const [userId, setUserId] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [userId, setUserId] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const checkRole = async () => {
@@ -32,7 +32,7 @@ const DashboardPage = () => {
   return (
     <div className="relative">
       <header
-        className="bg-gradient-to-t from-[#F6402D] to-[#FE6333] px-4 py-6 w-full
+        className="bg-gradient-to-t from-[#F6402D] to-[#FE6333] p-4 w-full
       flex justify-evenly items-center gap-4"
       >
         <div className="relative flex flex-1 flex-shrink-0">
@@ -54,7 +54,9 @@ const DashboardPage = () => {
             className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
           />
         </div>
-        {role === "user" && <CartBadge userId={userId ? userId : ""} />}
+       <div className="w-10">
+       {role === "user" && <CartBadge userId={userId} />}
+       </div>
       </header>
       {/* <ProductCategories /> */}
       <div className="p-4 mt-2 mb-28">
