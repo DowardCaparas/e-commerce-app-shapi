@@ -72,17 +72,17 @@ const EditProductQuantity = ({
           
           <button
             onClick={handleDecrement}
-            className="cursor-pointer py-1 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 
-        rounded-l-md shadow-sm text-xl font-semibold"
+            className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
+        rounded-l-md text-xl font-semibold border-r"
             aria-label="decrement the item quantity"
           >
             -
           </button>
-          <span className="font-medium mx-4">{quantity}</span>
+          <span className="font-medium mx-2">{quantity}</span>
           <button
             onClick={handleIncrement}
-            className="cursor-pointer py-1 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 
-        rounded-r-md shadow-sm font-semibold text-xl"
+            className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
+        rounded-r-md font-semibold text-xl border-l"
             aria-label="increment the item quantity"
           >
             +

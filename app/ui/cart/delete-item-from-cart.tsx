@@ -49,7 +49,7 @@ const DeleteItemFromCart = ({ productId }: { productId: number }) => {
         <>
           <button
             onClick={() => setShowConfirm(true)}
-            className="border rounded-sm bg-white p-2 hover:bg-red-50 active:bg-red-100 transition
+            className="border rounded-sm bg-white p-1 hover:bg-red-50 active:bg-red-100 transition
          cursor-pointer"
             aria-label="Delete item from cart"
           >

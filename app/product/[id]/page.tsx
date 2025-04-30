@@ -1,5 +1,5 @@
 import { fetchProductById } from "@/app/lib/data";
-import ProductDetails from "@/app/ui/product-details";
+import ProductDetails from "@/app/ui/product/product-details";
 import React from "react";
 
 const ProductPage = async (props: {

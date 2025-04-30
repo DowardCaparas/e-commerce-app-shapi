@@ -1,4 +1,4 @@
-import { ProductDataTypes } from "../lib/definitions";
+import { ProductDataTypes } from "../../lib/definitions";
 import Image from "next/image";
 import React from "react";
 

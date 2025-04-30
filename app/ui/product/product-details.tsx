@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { ProductDataTypes } from "../lib/definitions";
+import { ProductDataTypes } from "../../lib/definitions";
 import React, { useState } from "react";
 import SetQuantity from "./set-quantity";
 import ProductReviews from "./product-reviews";
-import ProductCards from "./product-card";
+import ProductCards from "../product-card";
 
 const ProductDetails = ({
   id,
