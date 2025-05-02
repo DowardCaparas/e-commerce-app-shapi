@@ -15,6 +15,12 @@ const links = [
     role: "admin",
   },
   {
+    label: "Orders",
+    path: "/dashboard/orders",
+    icon: "/package.svg",
+    role: "user",
+  },
+  {
     label: "Me",
     path: "/dashboard/account",
     icon: "/user.svg",
@@ -79,7 +85,8 @@ const SideNav = () => {
 
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
-      const linkWithUserId = link.label === "Cart" || link.label === "Me";
+      const linkWithUserId =
+        link.label === "Cart" || link.label === "Orders" || link.label === "Me";
       return (
         <Link
           key={link.label}

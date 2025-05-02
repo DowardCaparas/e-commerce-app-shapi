@@ -47,4 +47,5 @@ export interface CartItem {
   thumbnail: string;
   quantity: number;
   date: string;
+  checkedout: boolean;
 };
