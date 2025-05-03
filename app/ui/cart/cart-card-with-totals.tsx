@@ -66,9 +66,8 @@ const CartCardWithTotals = ({ cart, userId }: { cart: CartItem[], userId: string
       {cartQuantity > 0 ? (
         <div className="inline-grid space-y-2 w-full my-16">
           {cart.map((product) => {
-            const safeDiscount = parseFloat(
-              Math.abs(product.discount).toFixed(0)
-            );
+            
+            const safeDiscount = Math.abs(product.discount);
             const originalPrice = product.price / (1 - safeDiscount / 100);
             const discountAmount = originalPrice - product.price;
 
@@ -137,7 +136,7 @@ const CartCardWithTotals = ({ cart, userId }: { cart: CartItem[], userId: string
                   <div className="flex justify-between items-center px-2 mt-2">
                     <span>Discount</span>
                     <span className="font-medium">
-                      ${saved.toFixed(2)}
+                    ${(discountAmount * product.quantity).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center px-2 mt-2">

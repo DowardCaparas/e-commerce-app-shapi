@@ -1,5 +1,6 @@
 import { fetchAccountById } from "@/app/lib/data";
 import EditProfile from "@/app/ui/edit-profile";
+import SignOut from "@/app/ui/sign-out";
 import Image from "next/image";
 import React from "react";
 
@@ -43,6 +44,10 @@ const AccountSettingsPage = async (props: {
           address={acc.address}
         />
       ))}
+      <hr className="my-4" />
+      <div className="mb-28 mt-10">
+        <SignOut />
+      </div>
     </div>
   );
 };

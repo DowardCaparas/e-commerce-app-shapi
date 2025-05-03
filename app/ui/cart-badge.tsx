@@ -9,7 +9,7 @@ const CartBadge = () => {
   const [storedUserId, setstoredUserId] = useState("")
 
   useEffect(() => {
-    const checkRole = async () => {
+    const checkAccount = async () => {
       try {
         const res = await fetch("/api/check-account");
         const data = await res.json();
@@ -22,7 +22,7 @@ const CartBadge = () => {
         console.error("Failed to check the role:", error);
       }
     };
-    checkRole();
+    checkAccount();
   }, []);
 
   return (
