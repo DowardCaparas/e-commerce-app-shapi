@@ -4,13 +4,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { CartItem } from "../../lib/definitions";
-import CancelCheckedOutItem from "./cancel-order-button";
+import PlaceOrderButton from "../place-order-btn";
+import { useEffect, useState } from "react";
 
 const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
+  const [totals, setTotals] = useState({ total: 0, saved: 0 });
+
+  useEffect(() => {
+    const fetchTotals = async () => {
+      try {
+        const res = await fetch("/api/cart/total-sum-checkedout-items");
+        const data = await res.json();
+        if (res.ok && data.success) {
+          setTotals({ total: data.totalValue, saved: data.totalSaved });
+        }
+      } catch (error) {
+        console.error("Error fetching totals:", error);
+      }
+    };
+
+    fetchTotals();
+  }, []);
+
   return (
     <div className="md:p-4 grid max-md:mt-4 max-md:mb-16 lg:grid-cols-2 grid-cols-1 gap-2">
       {cart.length > 0 ? (
-        <div className="inline-grid space-y-2 w-full my-16">
+        <div className="inline-grid space-y-2 w-full">
           {cart.map((product) => {
             const safeDiscount = parseFloat(
               Math.abs(product.discount).toFixed(0)
@@ -26,8 +45,7 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
                       <hr />
                       <Link
                         href={`/product/${product.productid}`}
-                        className="inline-grid hover:bg-gray-100 active:bg-gray-200
-                         duration-75 transition-colors ease-out"
+                        className="inline-grid hover:bg-gray-50 active:bg-gray-100 duration-75 transition-colors ease-out"
                       >
                         <div className="flex items-center gap-2 w-full">
                           <Image
@@ -62,18 +80,10 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
                         </div>
                       </Link>
                       <hr />
-
-                        <div className="flex items-center justify-between gap-6 mt-1">
-                          {/* product quantity */}
-                        <span>
-                          Qty:{" "}
-                          <span className="font-medium">
-                            {product.quantity}
-                          </span>
-                        </span>
-                        <CancelCheckedOutItem productId={product.productid} />
-                        </div>
-
+                      <span>
+                        Qty:{" "}
+                        <span className="font-medium">{product.quantity}</span>
+                      </span>
                     </div>
 
                     <div className="flex justify-between items-center px-2 mt-2">
@@ -85,7 +95,7 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
                     <div className="flex justify-between items-center px-2 mt-2">
                       <span>Discount</span>
                       <span className="font-medium">
-                        ${(discountAmount * product.quantity).toFixed(2)}
+                        ${totals.saved.toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center px-2 mt-2">
@@ -103,7 +113,6 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
           })}
         </div>
       ) : (
-        // display ui of cart is empty
         <div className="py-24 bg-gray-100 border rounded-lg flex flex-col gap-8 items-center">
           <Image
             src="/images/emptyCart.webp"
@@ -114,6 +123,30 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
           <h3 className="font-medium text-2xl text-gray-500">Cart is empty</h3>
         </div>
       )}
+
+      <div>
+        <div
+          className="bg-white md:p-4 p-2 border md:rounded-lg sticky lg:top-20
+          flex lg:flex-col gap-4 max-lg:fixed max-lg:right-0 max-lg:left-0
+          md:left-64 bottom-0 max-lg:justify-between max-md:items-center"
+        >
+          <div className="inline-grid lg:text-xl text-lg">
+            <span>
+              Total
+              <span className="font-bold text-orange-600 ml-2">
+                ${totals.total.toFixed(2)}
+              </span>
+            </span>
+            <span>
+              Saved
+              <span className="font-bold text-orange-600 ml-2">
+                ${totals.saved.toFixed(2)}
+              </span>
+            </span>
+          </div>
+          <PlaceOrderButton />
+        </div>
+      </div>
     </div>
   );
 };

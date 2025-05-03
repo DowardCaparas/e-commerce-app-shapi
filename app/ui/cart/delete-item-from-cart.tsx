@@ -29,7 +29,7 @@ const DeleteItemFromCart = ({ productId }: { productId: number }) => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await fetch("/api/cart/delete-item", {
+      await fetch("/api/cart/delete-item-from-cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId }), // removed userId

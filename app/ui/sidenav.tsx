@@ -15,12 +15,6 @@ const links = [
     role: "admin",
   },
   {
-    label: "Orders",
-    path: "/dashboard/orders",
-    icon: "/package.svg",
-    role: "user",
-  },
-  {
     label: "Me",
     path: "/dashboard/account",
     icon: "/user.svg",
@@ -116,22 +110,25 @@ const SideNav = () => {
           className="md:w-[70%] sm:w-[25%] w-[40%] mx-auto "
         />
       </div>
-      <div className="flex md:flex-col">
-        {showLinks && (
-          <>
-            {/* Filter the side nav links based on the user type */}
-            {renderLinks(
-              role === "user"
-                ? links.filter(
-                    (link) => link.role === "user" || link.label === "Home"
-                  )
-                : links.filter(
-                    (link) => link.role === "admin" || link.label === "Me"
-                  )
+      {pathname !== `/dashboard/checkout/${userId}` &&
+        pathname !== `/dashboard/cart/${userId}` && (
+          <div className="flex md:flex-col">
+            {showLinks && (
+              <>
+                {/* Filter the side nav links based on the user type */}
+                {renderLinks(
+                  role === "user"
+                    ? links.filter(
+                        (link) => link.role === "user" || link.label === "Home"
+                      )
+                    : links.filter(
+                        (link) => link.role === "admin" || link.label === "Me"
+                      )
+                )}
+              </>
             )}
-          </>
+          </div>
         )}
-      </div>
     </div>
   );
 };

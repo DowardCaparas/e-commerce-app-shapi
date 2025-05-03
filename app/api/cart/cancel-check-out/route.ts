@@ -19,20 +19,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { productId, quantity } = await req.json();
-
   try {
     await sql`
       UPDATE cart
-      SET quantity = ${quantity}
-      WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = FALSE
+      SET checkedOut = FALSE
+      WHERE userId = ${userId} AND checkedOut = TRUE
     `;
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error("Error deleting product from cart:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update quantity." },
+      { success: false, message: "Failed to delete product from cart" },
       { status: 500 }
     );
   }

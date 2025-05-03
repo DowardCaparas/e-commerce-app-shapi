@@ -23,8 +23,19 @@ const CartQuantity = () => {
     return () => clearInterval(interval);
   }, []);
 
-//   only return a number if the quantity is greater than zero
-  return <div>{cartQuantity > 0 && cartQuantity}</div>;
+  //   only return a number if the quantity is greater than zero
+  return (
+    <>
+      {cartQuantity > 0 && (
+        <span
+          className="absolute -top-3 -right-0 bg-red-600 border-2 border-white 
+        rounded-full text-white font-semibold text-xs p-0.5"
+        >
+          {cartQuantity}
+        </span>
+      )}
+    </>
+  );
 };
 
 export default CartQuantity;

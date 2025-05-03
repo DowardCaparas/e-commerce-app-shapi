@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDateToLocal } from "@/app/lib/utils";
@@ -9,11 +9,34 @@ import SelectCartItem from "./select-cart-item";
 import EditProductQuantity from "./edit-product-quantity";
 import DeleteItemFromCart from "./delete-item-from-cart";
 import CheckOutButton from "./check-out-btn";
+import { useRouter } from "next/navigation";
 
-const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
+const CartCardWithTotals = ({ cart, userId }: { cart: CartItem[], userId: string }) => {
   const [selectedItems, setSelectedItems] = useState<{
     [key: number]: boolean;
   }>({});
+  // Get cart quantity if the item is not checked out
+    const [cartQuantity, setCartQuantity] = useState(0);
+    const router = useRouter();
+  
+    useEffect(() => {
+      router.refresh();
+      const fetchCartQuantity = async () => {
+        try {
+          const res = await fetch(`/api/cart/quantity`);
+          if (!res.ok) throw new Error(`API error: ${res.status}`);
+          const data = await res.json();
+          setCartQuantity(data.quantity);
+        } catch (error) {
+          console.error("Failed to fetch cart quantity:", error);
+        }
+      };
+  
+      fetchCartQuantity();
+      const interval = setInterval(fetchCartQuantity, 10000); // every 10 seconds
+  
+      return () => clearInterval(interval);
+    }, []);
 
   const handleSelectChange = (productId: number, checked: boolean) => {
     setSelectedItems((prev) => ({ ...prev, [productId]: checked }));
@@ -31,7 +54,7 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
 
   // calculate the total discount of all selected items
   const saved = selectedProducts.reduce((sum, product) => {
-    const safeDiscount = parseFloat(Math.abs(product.discount).toFixed(0));
+    const safeDiscount = Math.abs(product.discount);
     const originalPrice = product.price / (1 - safeDiscount / 100);
     const discountAmount = originalPrice - product.price;
     return sum + discountAmount * product.quantity;
@@ -39,7 +62,8 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
 
   return (
     <div className="md:p-4 grid max-md:mt-4 max-md:mb-16 lg:grid-cols-2 grid-cols-1 gap-2">
-      {cart.length > 0 ? (
+
+      {cartQuantity > 0 ? (
         <div className="inline-grid space-y-2 w-full my-16">
           {cart.map((product) => {
             const safeDiscount = parseFloat(
@@ -61,7 +85,7 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
                     <hr />
                     <Link
                       href={`/product/${product.productid}`}
-                      className="inline-grid hover:bg-gray-100 active:bg-gray-200
+                      className="inline-grid hover:bg-gray-50 active:bg-gray-100
                          duration-75 transition-colors ease-out"
                     >
                       <div className="flex items-center gap-2 w-full">
@@ -113,7 +137,7 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
                   <div className="flex justify-between items-center px-2 mt-2">
                     <span>Discount</span>
                     <span className="font-medium">
-                      ${(discountAmount * product.quantity).toFixed(2)}
+                      ${saved.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center px-2 mt-2">
@@ -148,8 +172,8 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
         {cart.length > 0 && (
           <div
             className="bg-white md:p-4 p-2 border md:rounded-lg sticky lg:top-20
-            flex lg:flex-col gap-4 max-lg:fixed max-md:bottom-12 max-lg:right-0 max-lg:left-0
-            md:left-64 md:bottom-0 max-lg:justify-between max-md:items-center"
+            flex lg:flex-col gap-4 max-lg:fixed max-lg:right-0 max-lg:left-0
+            md:left-64 bottom-0 max-lg:justify-between max-md:items-center"
           >
             <div className="inline-grid lg:text-xl text-lg">
               <span>
@@ -167,6 +191,7 @@ const CartCardWithTotals = ({ cart }: { cart: CartItem[] }) => {
             </div>
             <CheckOutButton
               selectedProductIds={selectedProductIds}
+              userId={userId}
             />
           </div>
         )}

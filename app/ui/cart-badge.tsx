@@ -2,16 +2,32 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartQuantity from "./cart-quantity";
 
-const CartBadge = ({userId}: {userId: string}) => {
+const CartBadge = () => {
+  const [storedUserId, setstoredUserId] = useState("")
+
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch("/api/check-account");
+        const data = await res.json();
+
+        if (data.userId) {
+          setstoredUserId(data.userId);
+        }
+
+      } catch (error) {
+        console.error("Failed to check the role:", error);
+      }
+    };
+    checkRole();
+  }, []);
+
   return (
     <div className="relative">
-      <Link
-        href={`/dashboard/cart/${userId}`}
-        aria-label="Cart"
-      >
+      <Link href={`/dashboard/cart/${storedUserId}`} aria-label="Cart">
         <Image
           src="/cart.svg"
           alt="cart icon"
@@ -20,12 +36,8 @@ const CartBadge = ({userId}: {userId: string}) => {
           className="cursor-pointer hover:scale-95"
         />
       </Link>
-        <span
-          className="absolute -top-2 -right-0 bg-red-600 border-2 border-white 
-         rounded-full text-white font-semibold text-xs p-0.5"
-        >
-          <CartQuantity />
-        </span>
+      {/* cart quantity */}
+      <CartQuantity />
     </div>
   );
 };
