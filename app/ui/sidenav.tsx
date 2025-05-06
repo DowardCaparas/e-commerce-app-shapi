@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const links = [
-  { label: "Home", path: "/dashboard", icon: "/home.svg", role: "admin" },
+  { label: "Home", path: "/", icon: "/home.svg", role: "admin" },
+  { label: "Mall", path: "/dashboard", icon: "/store.svg", role: "user" },
   {
     label: "Users",
     path: "/dashboard/users",
