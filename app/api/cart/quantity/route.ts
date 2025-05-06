@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     const result = await sql<{ count: number }>`
       SELECT COUNT(*) AS count
       FROM cart
-      WHERE userId = ${userId} AND checkedOut = FALSE
+      WHERE userId = ${userId} AND checkedOut = 'no'
     `;
     const quantity = result.rows[0].count || 0;
     return NextResponse.json({ quantity });

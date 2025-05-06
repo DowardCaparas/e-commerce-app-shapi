@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     // check if the product is already exist in the cart
     const existingItem = await sql`
       SELECT * FROM cart
-      WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = FALSE
+      WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = 'no'
       LIMIT 1
     `;
 

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     await sql`
       UPDATE cart
       SET quantity = ${quantity}
-      WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = FALSE
+      WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = 'no'
     `;
 
     return NextResponse.json({ success: true });

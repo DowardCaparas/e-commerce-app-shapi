@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useState } from "react";
 
@@ -29,11 +30,15 @@ const SignOut = () => {
       {/* Sign out button in bottom right */}
       <button
         onClick={() => setShowConfirm(true)}
-        className="bg-red-500 hover:bg-red-600 active:bg-red-700 px-4 py-2 text-white
-                    rounded-lg font-medium cursor-pointer transition-colors duration-75 ease-in"
         aria-label="Signing out the account"
       >
-        Sign out
+        <Image
+          src="/logout.svg"
+          alt="logout icon"
+          width={25}
+          height={25}
+          className="cursor-pointer hover:scale-95"
+        />
       </button>
 
       {/* Confirmation Modal */}

@@ -3,7 +3,7 @@
 import { sql } from "@vercel/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const session = req.cookies.get("session");
   if (!session) {
     return NextResponse.json({ success: false, message: "Not Authenticated" }, { status: 401 });
@@ -17,13 +17,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, message: "Invalid session", error }, { status: 400 });
   }
 
+  const {checkoutStatus} = await req.json();
+
   try {
     const result = await sql`
       SELECT 
         SUM(price * quantity) AS totalValue,
         SUM(((price / (1 - discount / 100)) - price) * quantity) AS totalSaved
       FROM cart
-      WHERE userId = ${userId} AND checkedOut = TRUE
+      WHERE userId = ${userId} AND checkedOut = ${checkoutStatus}
     `;
 
     const row = result.rows[0];

@@ -69,7 +69,7 @@ const ProductCards = ({
   }
 
   return (
-    <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
+    <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 p-4">
       {products.map((product: ProductDataTypes) => (
         <Link
           key={product.id}

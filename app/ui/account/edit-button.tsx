@@ -5,27 +5,20 @@ import Image from "next/image";
 import React, { useState } from "react";
 import EditProfile from "../edit-profile";
 
-const ShopperInfo = ({ id, name, username, email, address }: UserAccount) => {
+const EditAccountButton = ({ id, name, username, email, address }: UserAccount) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="md:mx-4">
+    <>
       <button
         key={id}
         onClick={() => setIsModalOpen(true)}
-        className="p-4 border bg-white md:rounded-lg lg:w-[50%] w-full cursor-pointer
-        flex justify-between items-center hover:bg-gray-50 active:bg-gray-100"
+        className="cursor-pointer flex items-center gap-2 hover:underline"
       >
-        <div className="flex flex-col items-start gap-1">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold">{name}</span>
-            <span>{email}</span>
-          </div>
-          <span>{address}</span>
-        </div>
+        Edit
         <Image
-          src="/chevron-right.svg"
-          alt="chevron right"
+          src="/pen.svg"
+          alt="pen icon"
           width={20}
           height={20}
         />
@@ -36,7 +29,7 @@ const ShopperInfo = ({ id, name, username, email, address }: UserAccount) => {
           className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50
       "
         >
-          <div className="bg-white md:rounded-lg max-md:w-full p-5 py-10">
+          <div className="bg-white text-black md:rounded-lg max-md:w-full p-5 py-10">
             <EditProfile
               key={id}
               id={id}
@@ -56,8 +49,8 @@ const ShopperInfo = ({ id, name, username, email, address }: UserAccount) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
-export default ShopperInfo;
+export default EditAccountButton;

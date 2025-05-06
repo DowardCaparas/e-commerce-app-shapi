@@ -16,7 +16,7 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
   const initialState: AccountFormState = { message: null, errors: {} };
   const updateAccountById = updateAccount.bind(null, id);
   const [state, formAction] = useActionState(updateAccountById, initialState);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -52,24 +52,6 @@ const EditProfile = ({ id, name, username, email, address }: UserAccount) => {
 
   return (
     <>
-      {/* edit button */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => setIsEditing(true)}
-          className={`ring ring-black p-2 rounded-lg flex items-center gap-4
-                  active:scale-100 ${
-                    isEditing
-                      ? "opacity-70 cursor-not-allowed disabled:bg-gray-300"
-                      : "hover:scale-105 cursor-pointer"
-                  }`}
-          disabled={isEditing}
-        >
-          {isEditing ? "Editing..." : "Edit"}
-          <Image src="/pen.svg" alt="pen icon" width={25} height={25} />
-        </button>
-        <span>Click to edit</span>
-      </div>
-
       {/* form */}
       <form
         action={(formData) =>

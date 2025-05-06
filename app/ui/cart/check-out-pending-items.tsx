@@ -5,8 +5,9 @@ import Link from "next/link";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { CartItem } from "../../lib/definitions";
 import { useEffect, useState } from "react";
+import PlaceOrderButton from "../place-order-btn";
 
-const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
+const PendingCheckOutItems = ({ cart, userId }: { cart: CartItem[], userId: string }) => {
   const [totals, setTotals] = useState({ total: 0, saved: 0 });
 
   useEffect(() => {
@@ -15,8 +16,9 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
         const res = await fetch("/api/cart/total-sum-checkedout-items", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ checkoutStatus: "completed" }),
+          body: JSON.stringify({ checkoutStatus: "pending" }),
         });
+
         const data = await res.json();
         if (res.ok && data.success) {
           setTotals({ total: data.totalValue, saved: data.totalSaved });
@@ -29,27 +31,26 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
     fetchTotals();
   }, []);
 
-  // completed items
-  const completedOrders = cart.filter(
-    (stat) => stat.checkedout === "completed"
-  );
+  // pending items
+  const pendingItems = cart.filter((stat) => stat.checkedout === "pending");
 
   return (
-    <div className="md:p-4 grid max-md:mt-4 max-md:mb-16 grid-cols-1 gap-2">
-      {completedOrders.length > 0 ? (
+    <div className="md:p-4 grid max-md:mt-4 max-md:mb-16 lg:grid-cols-2 grid-cols-1 gap-4">
+      {pendingItems.length > 0 ? (
         <div className="inline-grid space-y-2 w-full">
-          {completedOrders.map((product) => {
+          {pendingItems.map((product) => {
             const safeDiscount = Math.abs(product.discount);
             const originalPrice = product.price / (1 - safeDiscount / 100);
             const discountAmount = originalPrice - product.price;
 
             return (
-              <div key={product.id} className="flex flex-col">
-                <div className="inline-grid space-y-1 bg-white border md:rounded-lg p-3">
+              <div key={product.id} className="flex flex-col mt-40">
+                <div className="inline-grid space-y-1 bg-white md:rounded-lg p-3">
                   <hr />
                   <Link
                     href={`/product/${product.productid}`}
-                    className="inline-grid hover:bg-gray-50 active:bg-gray-100 duration-75 transition-colors ease-out"
+                    className="inline-grid hover:bg-gray-50 active:bg-gray-100 duration-75 
+                    transition-colors ease-out"
                   >
                     <div className="flex items-center gap-2 w-full">
                       <Image
@@ -119,32 +120,37 @@ const CheckedOutItems = ({ cart }: { cart: CartItem[] }) => {
             width={120}
             height={120}
           />
-          <h3 className="font-medium text-2xl text-gray-500">Cart is empty</h3>
+          <h3 className="font-medium text-2xl text-gray-500">No items</h3>
         </div>
       )}
 
-      <div
-        className="bg-white md:p-4 p-2 border md:rounded-lg sticky lg:top-20
-          flex lg:flex-col gap-4 max-lg:fixed max-lg:right-0 max-lg:left-0
-          md:left-64 md:bottom-0 bottom-12 max-lg:justify-between max-md:items-center "
-      >
-        <div className="inline-grid lg:text-xl text-lg">
-          <span>
-            Total
-            <span className="font-bold text-orange-600 ml-2">
-              ${totals.total.toFixed(2)}
-            </span>
-          </span>
-          <span>
-            Saved
-            <span className="font-bold text-orange-600 ml-2">
-              ${totals.saved.toFixed(2)}
-            </span>
-          </span>
+      {pendingItems.length > 0 && (
+        <div>
+          <div
+            className="bg-white lg:p-4 p-2 border lg:rounded-lg sticky lg:top-20
+          flex lg:flex-col gap-4 max-lg:fixed max-lg:right-0 max-lg:left-0 md:rounded-lg
+          lg:left-64 bottom-0 max-lg:justify-between max-lg:items-center md:mx-4"
+          >
+            <div className="inline-grid lg:text-xl text-lg">
+              <span>
+                Total
+                <span className="font-bold text-orange-600 ml-2">
+                  ${totals.total.toFixed(2)}
+                </span>
+              </span>
+              <span>
+                Saved
+                <span className="font-bold text-orange-600 ml-2">
+                  ${totals.saved.toFixed(2)}
+                </span>
+              </span>
+            </div>
+            <PlaceOrderButton userId={userId}/>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
-export default CheckedOutItems;
+export default PendingCheckOutItems;

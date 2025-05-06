@@ -6,16 +6,21 @@ import React, { useEffect, useState } from "react";
 import CartQuantity from "./cart-quantity";
 
 const CartBadge = () => {
-  const [storedUserId, setstoredUserId] = useState("")
+  const [storedUserId, setstoredUserId] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const checkAccount = async () => {
       try {
         const res = await fetch("/api/check-account");
+
+        if(!res.ok) return;
+
         const data = await res.json();
 
         if (data.userId) {
           setstoredUserId(data.userId);
+          setUserRole(data.role);
         }
 
       } catch (error) {
@@ -26,7 +31,9 @@ const CartBadge = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="w-10">
+      {userRole === "user" && (
+        <div className="relative">
       <Link href={`/dashboard/cart/${storedUserId}`} aria-label="Cart">
         <Image
           src="/cart.svg"
@@ -38,6 +45,8 @@ const CartBadge = () => {
       </Link>
       {/* cart quantity */}
       <CartQuantity />
+    </div>
+      )}
     </div>
   );
 };

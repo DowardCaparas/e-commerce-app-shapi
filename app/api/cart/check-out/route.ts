@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   try {
     await sql`
       UPDATE cart
-      SET checkedOut = TRUE
+      SET checkedOut = 'pending'
       WHERE userId = ${userId} AND productId = ANY(${pgArray}::int[])
     `;
 

@@ -80,13 +80,13 @@ const SideNav = () => {
   const renderLinks = (filteredLinks: LinksTypes[]) =>
     filteredLinks.map((link) => {
       const linkWithUserId =
-        link.label === "Cart" || link.label === "Orders" || link.label === "Me";
+        link.label === "Cart" || link.label === "Me";
       return (
         <Link
           key={link.label}
           href={linkWithUserId ? `${link.path}/${userId}` : link.path}
-          className={`flex max-md:flex-col max-md:items-center md:gap-3 md:p-3 py-1 w-full 
-            max-md:justify-center 
+          className={`flex max-lg:flex-col max-lg:items-center lg:gap-3 lg:p-3 py-1 w-full 
+            max-lg:justify-center 
             ${
               pathname === link.path || pathname === `${link.path}/${userId}`
                 ? "bg-orange-200"
@@ -94,25 +94,27 @@ const SideNav = () => {
             }`}
         >
           <Image src={link.icon} alt={link.label} width={25} height={25} />
-          <span className="font-medium max-md:text-xs">{link.label}</span>
+          <span className="font-medium max-lg:text-xs">{link.label}</span>
         </Link>
       );
     });
 
   return (
-    <div className="md:h-full max-md:w-full bg-white max-md:border-t max-md:fixed max-md:bottom-0 z-20">
-      <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden max-md:hidden">
+    <div className={`lg:h-full max-lg:w-full bg-white max-lg:border-t max-lg:fixed max-lg:bottom-0 z-20
+      ${pathname === `/dashboard/cart/${userId}` || pathname === `/dashboard/checkout/${userId}` 
+        ? "max-lg:hidden" : ""
+      }
+    `}>
+      <div className="bg-orange-50 w-full h-40 p-2 overflow-hidden max-lg:hidden">
         <Image
           src="/images/heroBG.webp"
           alt="Big Cart image illustration"
           width={300}
           height={300}
-          className="md:w-[70%] sm:w-[25%] w-[40%] mx-auto "
+          className="lg:w-[70%] sm:w-[25%] w-[40%] mx-auto "
         />
       </div>
-      {pathname !== `/dashboard/checkout/${userId}` &&
-        pathname !== `/dashboard/cart/${userId}` && (
-          <div className="flex md:flex-col">
+      <div className="flex lg:flex-col">
             {showLinks && (
               <>
                 {/* Filter the side nav links based on the user type */}
@@ -122,13 +124,12 @@ const SideNav = () => {
                         (link) => link.role === "user" || link.label === "Home"
                       )
                     : links.filter(
-                        (link) => link.role === "admin" || link.label === "Me"
+                        (link) => link.role === "admin"
                       )
                 )}
               </>
             )}
           </div>
-        )}
     </div>
   );
 };

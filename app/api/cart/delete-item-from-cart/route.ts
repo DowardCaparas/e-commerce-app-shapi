@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     await sql`
             DELETE 
             FROM cart
-            WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = FALSE
+            WHERE userId = ${userId} AND productId = ${productId} AND checkedOut = 'pending'
         `;
 
     return NextResponse.json({ success: true });

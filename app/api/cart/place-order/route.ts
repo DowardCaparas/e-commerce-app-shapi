@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
   try {
     await sql`
       UPDATE cart
-      SET checkedOut = FALSE
-      WHERE userId = ${userId} AND checkedOut = TRUE
+      SET checkedOut = 'completed'
+      WHERE userId = ${userId} AND checkedOut = 'pending'
     `;
 
     return NextResponse.json({ success: true });
