@@ -1,10 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const BackButtonCancelCheckOut = ({ path }: { path: string }) => {
+const CancelItemToCheckOut = ({productId}: {productId: number}) => {
+
+  const router = useRouter();
+
   const handleSubmit = async () => {
     try {
       await fetch("/api/cart/cancel-check-out", {
@@ -12,24 +14,27 @@ const BackButtonCancelCheckOut = ({ path }: { path: string }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          productId: productId
+        })
       });
+
+       router.refresh();
+
     } catch (err) {
       console.error("Checkout error:", err);
     }
   };
 
   return (
-    <Link href={path} onClick={handleSubmit} aria-label="cancel item to check out">
-      <Image
-        src="/chevron-left.svg"
-        alt="back button"
-        width={35}
-        height={35}
-        className="bg-white p-1 rounded-full hover:border border-white active:scale-95
-        transition"
-      />
-    </Link>
+    <button
+      onClick={handleSubmit}
+      className="py-1 px-4 border rounded-lg hover:bg-gray-50 cursor-pointer
+      active:bg-gray-100"
+    >
+      Cancel
+    </button>
   );
 };
 
-export default BackButtonCancelCheckOut;
+export default CancelItemToCheckOut;

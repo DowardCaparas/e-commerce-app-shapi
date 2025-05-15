@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const EditProductQuantity = ({
   qty,
@@ -11,24 +11,7 @@ const EditProductQuantity = ({
   productId: number;
 }) => {
   const [quantity, setQuantity] = useState(qty);
-  const [role, setRole] = useState("");
   const router = useRouter();
-  
-  useEffect(() => {
-    const checkRole = async () => {
-      try {
-        const res = await fetch("/api/check-account");
-        const data = await res.json();
-
-        if (data.role) {
-          setRole(data.role);
-        }
-      } catch (error) {
-        console.error("Failed to check the role:", error);
-      }
-    };
-    checkRole();
-  }, []);
 
   // Local update for quantity
   const updateQuantityOptimistically = (newQuantity: number) => {
@@ -46,7 +29,7 @@ const EditProductQuantity = ({
       });
     } catch (error) {
       console.error("Failed to update quantity:", error);
-    } 
+    }
     router.refresh();
   };
 
@@ -65,31 +48,25 @@ const EditProductQuantity = ({
   };
 
   return (
-    <>
-      {role === "user" && (
-        
-        <div className="flex items-center gap-2 border rounded-md">
-          
-          <button
-            onClick={handleDecrement}
-            className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
+    <div className="flex items-center gap-2 border rounded-md">
+      <button
+        onClick={handleDecrement}
+        className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
         rounded-l-md text-xl font-semibold border-r"
-            aria-label="decrement the item quantity"
-          >
-            -
-          </button>
-          <span className="font-medium mx-2">{quantity}</span>
-          <button
-            onClick={handleIncrement}
-            className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
+        aria-label="decrement the item quantity"
+      >
+        -
+      </button>
+      <span className="font-medium mx-2">{quantity}</span>
+      <button
+        onClick={handleIncrement}
+        className="cursor-pointer px-3 hover:bg-gray-100 active:bg-gray-200 
         rounded-r-md font-semibold text-xl border-l"
-            aria-label="increment the item quantity"
-          >
-            +
-          </button>
-        </div>
-      )}
-    </>
+        aria-label="increment the item quantity"
+      >
+        +
+      </button>
+    </div>
   );
 };
 

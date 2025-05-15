@@ -6,8 +6,15 @@ import { formatDateToLocal } from "@/app/lib/utils";
 import { CartItem } from "../../lib/definitions";
 import { useEffect, useState } from "react";
 import PlaceOrderButton from "../place-order-btn";
+import CancelItemToCheckOut from "./cancel-checkout-button";
 
-const PendingCheckOutItems = ({ cart, userId }: { cart: CartItem[], userId: string }) => {
+const PendingCheckOutItems = ({
+  cart,
+  userId,
+}: {
+  cart: CartItem[];
+  userId: string;
+}) => {
   const [totals, setTotals] = useState({ total: 0, saved: 0 });
 
   useEffect(() => {
@@ -44,7 +51,7 @@ const PendingCheckOutItems = ({ cart, userId }: { cart: CartItem[], userId: stri
             const discountAmount = originalPrice - product.price;
 
             return (
-              <div key={product.id} className="flex flex-col mt-40">
+              <div key={product.id} className="flex flex-col ">
                 <div className="inline-grid space-y-1 bg-white md:rounded-lg p-3">
                   <hr />
                   <Link
@@ -83,9 +90,13 @@ const PendingCheckOutItems = ({ cart, userId }: { cart: CartItem[], userId: stri
                     </div>
                   </Link>
                   <hr />
-                  <span>
-                    Qty: <span className="font-medium">{product.quantity}</span>
-                  </span>
+                  <div className="flex items-center justify-end gap-4">
+                    <span>
+                      Qty:{" "}
+                      <span className="font-medium">{product.quantity}</span>
+                    </span>
+                    <CancelItemToCheckOut productId={product.productid}/>
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center px-2 mt-2">
@@ -145,7 +156,7 @@ const PendingCheckOutItems = ({ cart, userId }: { cart: CartItem[], userId: stri
                 </span>
               </span>
             </div>
-            <PlaceOrderButton userId={userId}/>
+            <PlaceOrderButton userId={userId} />
           </div>
         </div>
       )}

@@ -8,12 +8,11 @@ import bcrypt from "bcryptjs";
 
 const AccountFormSchema = z
   .object({
-    username: z.string().min(3, { message: "Email is required." }),
+    username: z.string().min(3, { message: "Uername is required." }),
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters long." }),
     confirm_password: z.string(),
-    role: z.enum(["user", "admin"], { message: "Role is required." }),
   })
   .refine((data) => data.password === data.confirm_password, {
     path: ["confirm_password"],
@@ -22,7 +21,7 @@ const AccountFormSchema = z
 
 const UpdateAccountFormSchema = z.object({
   name: z.string().min(3, { message: "Name is required." }),
-  username: z.string().min(3, { message: "Email is required." }),
+  username: z.string().min(3, { message: "Uername is required." }),
   email: z
     .string({ message: "Please enter a valid email address" })
     .refine((email) => email.endsWith("@gmail.com"), {
@@ -39,14 +38,12 @@ export type AccountFormState = {
     address?: string[];
     password?: string[];
     confirm_password?: string[];
-    role?: string[];
   };
   values?: {
     name?: string;
     username?: string;
     email?: string;
     address?: string;
-    role?: string;
   };
   message?: string | null;
 };
@@ -56,9 +53,7 @@ export async function addAccount(
   formData: FormData
 ): Promise<AccountFormState> {
   const validatedFields = AccountFormSchema.safeParse({
-    name: formData.get("name")?.toString().trim(),
     username: formData.get("username")?.toString().trim(),
-    email: formData.get("email")?.toString().trim(),
     password: formData.get("password")?.toString().trim(),
     confirm_password: formData.get("confirm_password")?.toString().trim(),
     role: formData.get("role")?.toString() as "user" | "admin",
@@ -72,22 +67,19 @@ export async function addAccount(
     return {
       errors: formattedErrors,
       values: {
-        name: formData.get("name")?.toString(),
         username: formData.get("username")?.toString(),
-        email: formData.get("email")?.toString(),
-        role: formData.get("role")?.toString(),
       },
       message: "Validation failed.",
     };
   }
 
-  const { username, password, role } = validatedFields.data;
+  const { username, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     await sql`
-      INSERT INTO accounts (username, password, role)
-      VALUES (${username}, ${hashedPassword}, ${role})
+      INSERT INTO accounts (username, password)
+      VALUES (${username}, ${hashedPassword})
       ON CONFLICT (id) DO NOTHING
     `;
   } catch (error) {

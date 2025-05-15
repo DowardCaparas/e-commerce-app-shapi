@@ -144,7 +144,7 @@ const LogInPage = () => {
             </button>
           </form>
 
-          <div className="flex items-center gap-2 -mt-7">
+          <div className="flex items-center gap-2 md:-mt-7">
             <span>Have an account?</span>
             <Link
               href="/create-account"
