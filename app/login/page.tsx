@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import NavBar from "../ui/navbar";
+import Image from "next/image";
 
 const LogInPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -30,40 +32,45 @@ const LogInPage = () => {
   }, [router]);
 
   // Submit the user input to sign in
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setLoading(true);
+      setError("");
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-      if (res.ok) {
-        setTimeout(() => {
-          router.push("/dashboard"); // or wherever you want
-        }, 50);
-      } else {
-        const data = await res.json();
-        setError(data.message || "Login failed");
+        if (res.ok) {
+          setTimeout(() => {
+            router.push("/dashboard"); // or wherever you want
+          }, 50);
+        } else {
+          const data = await res.json();
+          setError(data.message || "Login failed");
+        }
+      } catch (err) {
+        console.error("Failed to login:", err);
+        setError("Something went wrong. Please try again.");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to login:", err);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [username, password, router]
+  );
 
   return (
     <>
       <NavBar />
       <div className="lg:px-16 md:px-8 px-4 pb-28 pt-32">
-        <div className="mx-auto bg-white xl:w-[50%] md:w-[70%] w-full flex flex-col 
-        items-center py-6 rounded-lg shadow-sm">
+        <div
+          className="mx-auto bg-white w-full flex flex-col 
+        items-center py-6 rounded-lg shadow-sm relative max-w-xl"
+        >
           <span className="md:text-2xl text-xl font-medium">
             Sign in your account
           </span>
@@ -89,27 +96,55 @@ const LogInPage = () => {
               <label htmlFor="password">Password</label>
               <input
                 id="password"
-                type="password"
+                type={isPasswordHidden ? "text" : "password"}
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="border border-orange-500 h-10 pl-2 mt-2"
                 required
               />
+
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="checkbox"
+                  name="showpass"
+                  id="showpass"
+                  checked={isPasswordHidden}
+                  onChange={() => setIsPasswordHidden((prev) => !prev)}
+                />
+                <label htmlFor="showpass">Show password</label>
+              </div>
             </div>
 
-            {error && <p className="text-red-500">{error}</p>}
+            <div className="h-2">
+              {error && <p className="text-red-500">{error}</p>}
 
+            </div>
             <button
               type="submit"
               disabled={loading}
-              className="py-2 px-6 text-white text-xl font-medium rounded-lg shadow-md cursor-pointer bg-orange-600 hover:bg-orange-500 active:bg-orange-600 disabled:opacity-50"
+              className="py-2 px-6 text-white text-xl font-medium rounded-lg shadow-md 
+              cursor-pointer bg-green-400 hover:bg-green-500 active:bg-green-400
+              disabled:opacity-80 disabled:cursor-not-allowed"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Image
+                    src="/loader.svg"
+                    alt="check icon"
+                    width={25}
+                    height={25}
+                    className="animate-spin"
+                  />
+                  Signing in...
+                </span>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 -mt-7">
             <span>Have an account?</span>
             <Link
               href="/create-account"

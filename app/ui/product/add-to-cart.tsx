@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const AddToCart = ({
   productId,
@@ -20,6 +21,7 @@ const AddToCart = ({
   const [isAdding, setIsAdding] = useState(false);
   const [showAddingSuccess, setShowAddingSuccess] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (showAddingSuccess) {
@@ -31,9 +33,8 @@ const AddToCart = ({
   const handleSubmit = async () => {
     const date = new Date().toISOString().split("T")[0];
     setIsAdding(true);
-
     try {
-      await fetch("/api/cart/add-item", {
+      const response = await fetch("/api/cart/add-item", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -46,9 +47,15 @@ const AddToCart = ({
           date,
         }),
       });
-      setIsAdding(false);
-      setError("");
-      setShowAddingSuccess(true);
+
+      if (!response.ok) {
+        setIsAdding(false);
+        router.push("/login");
+      } else {
+        setError("");
+        setShowAddingSuccess(true);
+        setIsAdding(false);
+      }
     } catch (error) {
       console.error("Failed to add item to cart:", error);
       if (quantity <= 0) {

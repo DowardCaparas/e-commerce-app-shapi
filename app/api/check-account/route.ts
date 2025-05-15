@@ -8,11 +8,9 @@ export async function GET(req: NextRequest) {
   }
 
   let userId: string;
-  let userRole: string;
   try {
     const sessionData = JSON.parse(session.value);
     userId = sessionData.userId;
-    userRole = sessionData.userRole;
   } catch (error) {
     return NextResponse.json(
       { message: "Invalid session data", error },
@@ -20,5 +18,5 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  return NextResponse.json({ userId: userId, role: userRole }, { status: 200 });
+  return NextResponse.json({ userId: userId }, { status: 200 });
 }

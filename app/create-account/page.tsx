@@ -27,30 +27,6 @@ const CreateAccountPage = () => {
               action={(formData) => startTransition(() => formAction(formData))}
               className="w-full flex flex-col gap-8 md:p-14 sm:p-12 p-10"
             >
-              <div className="inline-grid">
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  defaultValue={state.values?.name ?? ""}
-                  className="border border-orange-500 h-10 pl-2 mt-2"
-                  aria-describedby="name_error"
-                />
-              </div>
-              <div
-                className="-mt-5"
-                id="name_error"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {state.errors?.name &&
-                  state.errors.name.map((error: string) => (
-                    <p className="text-sm text-red-500" key={error}>
-                      {error}
-                    </p>
-                  ))}
-              </div>
 
               <div className="inline-grid">
                 <label htmlFor="username">Username</label>
@@ -71,31 +47,6 @@ const CreateAccountPage = () => {
               >
                 {state.errors?.username &&
                   state.errors.username.map((error: string) => (
-                    <p className="text-sm text-red-500" key={error}>
-                      {error}
-                    </p>
-                  ))}
-              </div>
-
-              <div className="inline-grid">
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  defaultValue={state.values?.email ?? ""}
-                  className="border border-orange-500 h-10 pl-2 mt-2"
-                  aria-describedby="email_error"
-                />
-              </div>
-              <div
-                className="-mt-5"
-                id="email_error"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {state.errors?.email &&
-                  state.errors.email.map((error: string) => (
                     <p className="text-sm text-red-500" key={error}>
                       {error}
                     </p>
@@ -144,45 +95,6 @@ const CreateAccountPage = () => {
               >
                 {state.errors?.confirm_password &&
                   state.errors.confirm_password.map((error: string) => (
-                    <p className="text-sm text-red-500" key={error}>
-                      {error}
-                    </p>
-                  ))}
-              </div>
-
-              <fieldset className="inline-grid" aria-describedby="role_error">
-                <legend className="font-medium">Role:</legend>
-                <div className="flex items-center gap-2 py-3">
-                  <input
-                    id="user"
-                    type="radio"
-                    name="role"
-                    value="user"
-                    defaultChecked={state.values?.role === "user"}
-                    className="cursor-pointer"
-                  />
-                  <label htmlFor="user">Shopper</label>
-                </div>
-                <div className="flex items-center gap-2 py-3">
-                  <input
-                    id="admin"
-                    type="radio"
-                    name="role"
-                    value="admin"
-                    defaultChecked={state.values?.role === "admin"}
-                    className="cursor-pointer"
-                  />
-                  <label htmlFor="admin">Admin</label>
-                </div>
-              </fieldset>
-              <div
-                className="-mt-5"
-                id="role_error"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {state.errors?.role &&
-                  state.errors.role.map((error: string) => (
                     <p className="text-sm text-red-500" key={error}>
                       {error}
                     </p>

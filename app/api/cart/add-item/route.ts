@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   const session = req.cookies.get("session");
 
   if (!session) {
-    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+    return NextResponse.json({success: false, message: "Not authenticated" }, { status: 401 });
   }
 
   let userId: string;

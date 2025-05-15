@@ -8,14 +8,7 @@ import bcrypt from "bcryptjs";
 
 const AccountFormSchema = z
   .object({
-    name: z.string().min(3, { message: "Name is required." }),
     username: z.string().min(3, { message: "Email is required." }),
-    email: z
-      .string({ message: "Please enter a valid email address" })
-      .refine((email) => email.endsWith("@gmail.com"), {
-        message: "Email must end with @gmail.com",
-      }),
-    address: z.string().min(5, { message: "Address is required." }),
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters long." }),
@@ -88,13 +81,13 @@ export async function addAccount(
     };
   }
 
-  const { name, username, email, password, role } = validatedFields.data;
+  const { username, password, role } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     await sql`
-      INSERT INTO accounts (name, username, email, password, role)
-      VALUES (${name}, ${username}, ${email}, ${hashedPassword}, ${role})
+      INSERT INTO accounts (username, password, role)
+      VALUES (${username}, ${hashedPassword}, ${role})
       ON CONFLICT (id) DO NOTHING
     `;
   } catch (error) {

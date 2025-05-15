@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
     response.cookies.set({
       name: "session",
-      value: JSON.stringify({userId: user.id, userRole: user.role}),
+      value: JSON.stringify({userId: user.id}),
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
