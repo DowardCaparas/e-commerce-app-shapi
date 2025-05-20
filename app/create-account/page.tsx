@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useTransition } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { addAccount, AccountFormState } from "../lib/actions";
 import Link from "next/link";
 import React from "react";
@@ -11,6 +11,7 @@ const CreateAccountPage = () => {
   const initialState: AccountFormState = { message: null, errors: {} };
   const [state, formAction] = useActionState(addAccount, initialState);
   const [isPending, startTransition] = useTransition();
+  const [isPasswordHidden, setIsPasswordHidden] = useState(false);
 
   return (
     <>
@@ -57,7 +58,7 @@ const CreateAccountPage = () => {
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
-                  type="password"
+                  type={isPasswordHidden ? "text" : "password"}
                   name="password"
                   className="border border-orange-500 h-10 pl-2 mt-2"
                   aria-describedby="password_error"
@@ -81,7 +82,7 @@ const CreateAccountPage = () => {
                 <label htmlFor="confirm_password">Confirm Password</label>
                 <input
                   id="confirm_password"
-                  type="password"
+                  type={isPasswordHidden ? "text" : "password"}
                   name="confirm_password"
                   className="border border-orange-500 h-10 pl-2 mt-2"
                   aria-describedby="confirm_password_error"
@@ -99,6 +100,17 @@ const CreateAccountPage = () => {
                       {error}
                     </p>
                   ))}
+              </div>
+
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="checkbox"
+                  name="showpass"
+                  id="showpass"
+                  checked={isPasswordHidden}
+                  onChange={() => setIsPasswordHidden((prev) => !prev)}
+                />
+                <label htmlFor="showpass">Show password</label>
               </div>
 
               <button
